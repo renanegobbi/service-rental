@@ -1,0 +1,54 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-rental
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: YourPassword
+      POSTGRES_DB: ServiceRentalDb
+    ports:
+      - "15432:5432"
+    volumes:
+      # - ../sql:/docker-entrypoint-initdb.d
+      # - postgres_data:/var/lib/postgresql/data
+      - ../sql:/docker-entrypoint-initdb.d
+      - postgres_data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-rental
+    ports:
+      - "5672:5672"     # Porta de conexão do RabbitMQ
+      - "15672:15672"   # Porta do painel de administração (http://localhost:15672)
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # rental-api:
+    # build:
+      # context: ..
+      # dockerfile: src/services/Rental.Api/Dockerfile
+    # container_name: rental-api
+    # environment:
+      # - ASPNETCORE_ENVIRONMENT=Development
+      # - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=ServiceRentalDb;Username=postgres;Password=YourPassword
+      # - RabbitMQ__HostName=rabbitmq-rental   # Nome do container RabbitMQ (resolvido via DNS interno do Docker)
+      # - RabbitMQ__UserName=guest
+      # - RabbitMQ__Password=guest
+    # ports:
+      # - "5000:8080"
+    # depends_on:
+      # rabbitmq:
+        # condition: service_healthy
+      # postgres:
+        # condition: service_started
+     
+volumes:
+  # postgres_data:
+  postgres_data:
