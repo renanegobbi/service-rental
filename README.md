@@ -2,6 +2,18 @@
 This project is an implementation of the Mottu Backend Challenge, developed using .NET 8, PostgreSQL, RabbitMQ (with EasyNetQ), and CQRS architecture.
 The main goal is to simulate a motorcycle rental management system, handling the registration of couriers and motorcycles, order creation, and event-driven communication between services.
 
+### ⚙️ Tech Stack
+
+| Category | Technology |
+|-----------|-------------|
+| 🧱 **Framework** | .NET 8 (ASP.NET Core Web API) |
+| 🐘 **Database** | PostgreSQL (`rental_service` schema) |
+| 📨 **Messaging** | RabbitMQ with EasyNetQ |
+| 🧩 **Pattern** | CQRS + DDD |
+| 🐳 **Containerization** | Docker & Docker Compose |
+| 🗄️ **ORM** | Entity Framework Core |
+| 🧪 **Testing** | xUnit / FluentAssertions (optional) |
+
 
 # 🧱 Architecture
 
@@ -45,3 +57,25 @@ src/
 └── ServiceRental.sln       → Visual Studio solution file
 
 ```
+
+📦 Projects Overview
+| Project | Description |
+|----------|-------------|
+| **Rental.Core** | Contains core building blocks such as entities, value objects, events, and base command/query abstractions used across the solution. |
+| **Rental.MessageBus** | Encapsulates integration with RabbitMQ using **EasyNetQ**. Handles publishing and subscribing of integration events. |
+| **Rental.Services** | Contains reusable services and utilities shared across bounded contexts. |
+| **Rental.Api** | The main entry point (**REST API**). Handles commands for courier registration, motorcycle management, and rental creation. Publishes integration events to RabbitMQ. |
+| **Rental.Notification** | A background worker (microservice) that consumes integration events from RabbitMQ and records them into the `rental_service.notification` table. Ensures reliable event persistence and monitoring. |
+
+
+### 🐘 Database Schema
+
+All data is stored in the **`rental_service`** schema in **PostgreSQL**.
+
+| Table | Description |
+|--------|-------------|
+| **courier** | Stores driver information (CNPJ, driver license, image, etc.). |
+| **motorcycle** | Stores motorcycles available for rental. |
+| **rental_plan** | Defines pricing models (daily rate, penalty percent, duration). |
+| **rental** | Represents an active or completed rental, linking courier, motorcycle, and plan. |
+| **notification** | Stores consumed integration events, including payload and delivery status. |
