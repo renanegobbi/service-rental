@@ -11,26 +11,26 @@ namespace Rental.Core.DomainObjects
             Id = Guid.NewGuid();
         }
 
-        private List<Event> _notificacoes;
-        public IReadOnlyCollection<Event> Notificacoes => _notificacoes?.AsReadOnly();
+        private List<Event> _notifications;
+        public IReadOnlyCollection<Event> Notifications => _notifications?.AsReadOnly();
 
-        public void AdicionarEvento(Event evento)
+        public void AddEvent(Event eventItem)
         {
-            _notificacoes = _notificacoes ?? new List<Event>();
-            _notificacoes.Add(evento);
+            _notifications = _notifications ?? new List<Event>();
+            _notifications.Add(eventItem);
         }
 
-        public void RemoverEvento(Event eventItem)
+        public void RemoveEvent(Event eventItem)
         {
-            _notificacoes?.Remove(eventItem);
+            _notifications?.Remove(eventItem);
         }
 
-        public void LimparEventos()
+        public void ClearEvents()
         {
-            _notificacoes?.Clear();
+            _notifications?.Clear();
         }
 
-        #region Comparações
+        #region Comparisons
 
         public override bool Equals(object obj)
         {

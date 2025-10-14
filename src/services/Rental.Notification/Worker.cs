@@ -1,24 +1,42 @@
-namespace Rental.Notification
+using Rental.Core.Messages.Integration.Rental;
+using Rental.MessageBus;
+
+public class Worker : BackgroundService
 {
-    public class Worker : BackgroundService
+    private readonly ILogger<Worker> _logger;
+    private readonly IMessageBus _bus;
+
+    public Worker(ILogger<Worker> logger, IMessageBus bus)
     {
-        private readonly ILogger<Worker> _logger;
+        _logger = logger;
+        _bus = bus;
+    }
 
-        public Worker(ILogger<Worker> logger)
-        {
-            _logger = logger;
-        }
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        _logger.LogInformation("Worker started. Waiting for messages...");
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            while (!stoppingToken.IsCancellationRequested)
+        _bus.SubscribeAsync<MotorcycleRegisteredIntegrationEvent>(
+            subscriptionId: "rental.notification.worker.dev",
+            onMessage: async msg =>
             {
-                if (_logger.IsEnabled(LogLevel.Information))
+                try
                 {
-                    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                    _logger.LogInformation(
+                        "Event received: {Model} - Plate {Plate} - Id {Id}",
+                        msg.Model, msg.Plate, msg.Id);
+
+                    await Task.Delay(50, stoppingToken);
+
+                    _logger.LogInformation("Successfully processed: {Plate}", msg.Plate);
                 }
-                await Task.Delay(1000, stoppingToken);
-            }
-        }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error processing message {Id}", msg.Id);
+                }
+            });
+
+        return Task.CompletedTask;
     }
 }
+

@@ -12,7 +12,11 @@ services:
     volumes:
       # - ../sql:/docker-entrypoint-initdb.d
       # - postgres_data:/var/lib/postgresql/data
-      - ../sql:/docker-entrypoint-initdb.d
+      # - ../sql:/docker-entrypoint-initdb.d //
+      # - postgres_data:/var/lib/postgresql/data //
+      # monta o SQL local direto no container
+      - ../sql/init-database.sql:/docker-entrypoint-initdb.d/init-database.sql
+      # volume persistente real do banco
       - postgres_data:/var/lib/postgresql/data
 
   rabbitmq:

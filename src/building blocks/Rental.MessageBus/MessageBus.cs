@@ -1,7 +1,8 @@
 ﻿using EasyNetQ;
 using Polly;
 using RabbitMQ.Client.Exceptions;
-using Rental.Core.Messages.Integration;
+using Rental.Core.Messages.Integration.Common;
+using Rental.MessageBus.Serializers;
 
 namespace Rental.MessageBus
 {
@@ -84,7 +85,8 @@ namespace Rental.MessageBus
 
             policy.Execute(() =>
             {
-                _bus = RabbitHutch.CreateBus(_connectionString);
+                _bus = RabbitHutch.CreateBus(_connectionString, 
+                    register => register.Register<ITypeNameSerializer, ShortTypeNameSerializer>());
                 _advancedBus = _bus.Advanced;
                 _advancedBus.Disconnected += OnDisconnect;
             });

@@ -1,5 +1,5 @@
 ﻿using EasyNetQ;
-using Rental.Core.Messages.Integration;
+using Rental.Core.Messages.Integration.Common;
 
 namespace Rental.MessageBus
 {

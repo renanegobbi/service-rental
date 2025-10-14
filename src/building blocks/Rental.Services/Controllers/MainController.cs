@@ -9,37 +9,32 @@ namespace Rental.Services.Controllers
     [ApiController]
     public abstract class MainController : Controller
     {
-        protected ICollection<string> Erros = new List<string>();
+        protected ICollection<string> Errors = new List<string>();
 
         protected ActionResult CustomResponse(object result = null)
         {
-            if (OperacaoValida())
+            if (IsOperationValid())
             {
                 return Ok(result);
             }
 
-            //return BadRequest(new ValidationProblemDetails(new Dictionary<string, string[]>
-            //{
-            //    { "Mensagens", Erros.ToArray() }
-            //}));
-
             var problemDetails = new ValidationProblemDetails
             {
-                Title = "Erro de validação",
+                Title = "Validation error",
                 Status = 400
             };
 
-            problemDetails.Errors.Add("Mensagens", Erros.ToArray());
+            problemDetails.Errors.Add("Messages", Errors.ToArray());
 
             return BadRequest(problemDetails);
         }
 
         protected ActionResult CustomResponse(ModelStateDictionary modelState)
         {
-            var erros = modelState.Values.SelectMany(e => e.Errors);
-            foreach (var erro in erros)
+            var errors = modelState.Values.SelectMany(e => e.Errors);
+            foreach (var error in errors)
             {
-                AdicionarErroProcessamento(erro.ErrorMessage);
+                AddProcessingError(error.ErrorMessage);
             }
 
             return CustomResponse();
@@ -47,27 +42,27 @@ namespace Rental.Services.Controllers
 
         protected ActionResult CustomResponse(ValidationResult validationResult)
         {
-            foreach (var erro in validationResult.Errors)
+            foreach (var error in validationResult.Errors)
             {
-                AdicionarErroProcessamento(erro.ErrorMessage);
+                AddProcessingError(error.ErrorMessage);
             }
 
             return CustomResponse();
         }
 
-        protected bool OperacaoValida()
+        protected bool IsOperationValid()
         {
-            return !Erros.Any();
+            return !Errors.Any();
         }
 
-        protected void AdicionarErroProcessamento(string erro)
+        protected void AddProcessingError(string error)
         {
-            Erros.Add(erro);
+            Errors.Add(error);
         }
 
-        protected void LimparErrosProcessamento()
+        protected void ClearProcessingErrors()
         {
-            Erros.Clear();
+            Errors.Clear();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace Rental.Core.Messages.Integration
+namespace Rental.Core.Messages.Integration.Common
 {
     public class ResponseMessage : Message
     {

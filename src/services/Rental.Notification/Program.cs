@@ -1,14 +1,25 @@
-namespace Rental.Notification
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = Host.CreateApplicationBuilder(args);
-            builder.Services.AddHostedService<Worker>();
+using Rental.Core.Utils;
+using Rental.MessageBus;
 
-            var host = builder.Build();
-            host.Run();
-        }
-    }
-}
+await Host.CreateDefaultBuilder(args)
+    .ConfigureAppConfiguration((context, config) =>
+    {
+        config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+        config.AddEnvironmentVariables();
+    })
+    .ConfigureServices((context, services) =>
+    {
+        var configuration = context.Configuration;
+        var connection = configuration.GetMessageQueueConnection("MessageBus");
+
+        services.AddMessageBus(connection);
+
+        services.AddHostedService<Worker>();
+    })
+    .ConfigureLogging(logging =>
+    {
+        logging.ClearProviders();
+        logging.AddConsole();
+    })
+    .RunConsoleAsync();
+

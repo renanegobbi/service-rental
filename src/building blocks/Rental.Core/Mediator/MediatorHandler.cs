@@ -13,14 +13,15 @@ namespace Rental.Core.Mediator
             _mediator = mediator;
         }
 
-        public async Task<ValidationResult> EnviarComando<T>(T comando) where T : Command
+        public async Task<ValidationResult> SendCommand<T>(T comand) where T : Command
         {
-            return await _mediator.Send(comando);
+            return await _mediator.Send(comand);
         }
 
-        public async Task PublicarEvento<T>(T evento) where T : Event
+        public async Task PublishEvent<T>(T eventItem) where T : Event
         {
-            await _mediator.Publish(evento);
+            Console.WriteLine($"[MediatorHandler] Publishing event: {eventItem.GetType().Name}");
+            await _mediator.Publish(eventItem);
         }
     }
 }
