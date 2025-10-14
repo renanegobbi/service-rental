@@ -1,0 +1,27 @@
+﻿using FluentValidation.Results;
+using MediatR;
+using Rental.Core.Messages;
+
+namespace Rental.Core.Mediator
+{
+    public class MediatorHandler : IMediatorHandler
+    {
+        private readonly IMediator _mediator;
+
+        public MediatorHandler(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        public async Task<ValidationResult> SendCommand<T>(T comand) where T : Command
+        {
+            return await _mediator.Send(comand);
+        }
+
+        public async Task PublishEvent<T>(T eventItem) where T : Event
+        {
+            Console.WriteLine($"[MediatorHandler] Publishing event: {eventItem.GetType().Name}");
+            await _mediator.Publish(eventItem);
+        }
+    }
+}
