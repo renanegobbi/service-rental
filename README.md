@@ -79,3 +79,42 @@ All data is stored in the **`rental_service`** schema in **PostgreSQL**.
 | **rental_plan** | Defines pricing models (daily rate, penalty percent, duration). |
 | **rental** | Represents an active or completed rental, linking courier, motorcycle, and plan. |
 | **notification** | Stores consumed integration events, including payload and delivery status. |
+
+
+### 🐳 Running the Application with Docker Compose
+
+The project includes a `docker-compose.yml` file to simplify environment setup and orchestration.
+
+#### 🧩 Services Defined
+- **PostgreSQL** — main relational database (`ServiceRentalDb`)  
+- **RabbitMQ** — message broker with management UI  
+- *(optional)* **Rental.Api** — the main .NET 8 Web API (commented out for manual build)
+
+#### 🛠️ Steps to Start the Environment
+
+1. **Navigate to the docker folder**
+```
+cd docker
+```
+
+2. **Start PostgreSQL and RabbitMQ**
+```
+docker compose -f rental_production.yml -p rental up
+```
+This will:
+
+- Launch PostgreSQL on port 15432
+- Launch RabbitMQ on ports 5672 (AMQP) and 15672 (Admin UI)
+- Automatically execute the init-database.sql script located in the ../sql folder
+
+3. **Verify services**
+- PostgreSQL → localhost:15432
+- RabbitMQ Management → http://localhost:15672
+- (default credentials: guest / guest)
+
+
+4 **Run the API locally (if not using Docker build)**
+```
+dotnet run --project ../src/services/Rental.Api
+````
+
