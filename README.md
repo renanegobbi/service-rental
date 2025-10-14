@@ -1,5 +1,5 @@
 # 🏍️ Overview
-This project is an implementation of the Mottu Backend Challenge, developed using .NET 8, PostgreSQL, RabbitMQ (with EasyNetQ), and CQRS architecture.
+This project is an implementation a project, developed using .NET 8, PostgreSQL, RabbitMQ (with EasyNetQ), and CQRS architecture.
 The main goal is to simulate a motorcycle rental management system, handling the registration of couriers and motorcycles, order creation, and event-driven communication between services.
 
 ### ⚙️ Tech Stack
