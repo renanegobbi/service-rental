@@ -1,4 +1,5 @@
 using Rental.Api.Configuration;
+using Rental.Services.Storage;
 
 namespace Rental.Api
 {
@@ -24,6 +25,7 @@ namespace Rental.Api
             builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(typeof(Program).Assembly); });
             builder.Services.RegisterServices();
             builder.Services.AddMessageBusConfiguration(builder.Configuration);
+            builder.Services.AddStorage(builder.Configuration);
 
             var app = builder.Build();
 

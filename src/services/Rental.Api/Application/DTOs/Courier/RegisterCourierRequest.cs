@@ -7,6 +7,5 @@
         public DateTime BirthDate { get; set; }
         public string DriverLicenseNumber { get; set; }
         public string DriverLicenseType { get; set; }
-        public string? DriverLicenseImageUrl { get; set; }
     }
 }

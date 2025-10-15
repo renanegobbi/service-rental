@@ -20,8 +20,8 @@ namespace Rental.Api.Application.Commands.CourierCommands
             string cnpj,
             DateTime birthDate,
             string driverLicenseNumber,
-            string driverLicenseType,
-            string? driverLicenseImageUrl = null)
+            string driverLicenseType//,
+            /*string? driverLicenseImageUrl = null*/)
         {
             AggregateId = id;
             Id = id;
@@ -30,7 +30,7 @@ namespace Rental.Api.Application.Commands.CourierCommands
             BirthDate = birthDate;
             DriverLicenseNumber = driverLicenseNumber;
             DriverLicenseType = driverLicenseType;
-            DriverLicenseImageUrl = driverLicenseImageUrl;
+            //DriverLicenseImageUrl = driverLicenseImageUrl;
         }
 
         public RegisterCourierCommand(RegisterCourierRequest registerCourierRequest)
@@ -43,7 +43,9 @@ namespace Rental.Api.Application.Commands.CourierCommands
             BirthDate = registerCourierRequest.BirthDate;
             DriverLicenseNumber = registerCourierRequest.DriverLicenseNumber;
             DriverLicenseType = registerCourierRequest.DriverLicenseType;
-            DriverLicenseImageUrl = registerCourierRequest.DriverLicenseImageUrl;
+            //DriverLicenseImageUrl = registerCourierRequest.DriverLicenseImageUrl;
+            //null;
+            DriverLicenseImageUrl = null; // valor inicial padrão
         }
 
         public override bool IsValid()
