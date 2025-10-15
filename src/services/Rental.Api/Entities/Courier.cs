@@ -37,5 +37,15 @@ namespace Rental.Api.Entities
             DriverLicenseType = driverLicenseType;
             DriverLicenseImageUrl = driverLicenseImageUrl;
         }
+
+        public void UpdateDriverLicenseImage(string objectKey)
+        {
+            DriverLicenseImageUrl = objectKey;
+        }
+
+        public void RemoveDriverLicenseImage()
+        {
+            DriverLicenseImageUrl = null;
+        }
     }
 }

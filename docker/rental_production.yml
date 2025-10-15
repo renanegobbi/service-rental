@@ -10,21 +10,15 @@ services:
     ports:
       - "15432:5432"
     volumes:
-      # - ../sql:/docker-entrypoint-initdb.d
-      # - postgres_data:/var/lib/postgresql/data
-      # - ../sql:/docker-entrypoint-initdb.d //
-      # - postgres_data:/var/lib/postgresql/data //
-      # monta o SQL local direto no container
       - ../sql/init-database.sql:/docker-entrypoint-initdb.d/init-database.sql
-      # volume persistente real do banco
       - postgres_data:/var/lib/postgresql/data
 
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq-rental
     ports:
-      - "5672:5672"     # Porta de conexão do RabbitMQ
-      - "15672:15672"   # Porta do painel de administração (http://localhost:15672)
+      - "5672:5672"     
+      - "15672:15672" 
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
@@ -33,26 +27,20 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-  # rental-api:
-    # build:
-      # context: ..
-      # dockerfile: src/services/Rental.Api/Dockerfile
-    # container_name: rental-api
-    # environment:
-      # - ASPNETCORE_ENVIRONMENT=Development
-      # - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=ServiceRentalDb;Username=postgres;Password=YourPassword
-      # - RabbitMQ__HostName=rabbitmq-rental   # Nome do container RabbitMQ (resolvido via DNS interno do Docker)
-      # - RabbitMQ__UserName=guest
-      # - RabbitMQ__Password=guest
-    # ports:
-      # - "5000:8080"
-    # depends_on:
-      # rabbitmq:
-        # condition: service_healthy
-      # postgres:
-        # condition: service_started
+      
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin12345
+    ports:
+      - "9100:9000"   # API S3
+      - "9101:9001"   # Console (UI)
+    volumes:
+      - minio_data:/data
      
 volumes:
-  # postgres_data:
   postgres_data:
+  minio_data:

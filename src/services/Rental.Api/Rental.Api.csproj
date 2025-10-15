@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Application\Commands\Motocycle\**" />
+    <Content Remove="Application\Commands\Motocycle\**" />
+    <EmbeddedResource Remove="Application\Commands\Motocycle\**" />
+    <None Remove="Application\Commands\Motocycle\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.20" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.20" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.20">
@@ -31,10 +38,6 @@
     <ProjectReference Include="..\..\building blocks\Rental.Core\Rental.Core.csproj" />
     <ProjectReference Include="..\..\building blocks\Rental.MessageBus\Rental.MessageBus.csproj" />
     <ProjectReference Include="..\..\building blocks\Rental.Services\Rental.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Application\Commands\Motocycle\" />
   </ItemGroup>
 
 </Project>
