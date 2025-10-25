@@ -1,6 +1,9 @@
 ﻿using FluentValidation;
 using Rental.Api.Application.DTOs.Courier;
+using Rental.Core.DomainObjects;
 using Rental.Core.Messages;
+using Rental.Core.Utils.ExtensionMethods;
+using System;
 
 namespace Rental.Api.Application.Commands.CourierCommands
 {
@@ -20,8 +23,7 @@ namespace Rental.Api.Application.Commands.CourierCommands
             string cnpj,
             DateTime birthDate,
             string driverLicenseNumber,
-            string driverLicenseType//,
-            /*string? driverLicenseImageUrl = null*/)
+            string driverLicenseType)
         {
             AggregateId = id;
             Id = id;
@@ -30,7 +32,6 @@ namespace Rental.Api.Application.Commands.CourierCommands
             BirthDate = birthDate;
             DriverLicenseNumber = driverLicenseNumber;
             DriverLicenseType = driverLicenseType;
-            //DriverLicenseImageUrl = driverLicenseImageUrl;
         }
 
         public RegisterCourierCommand(RegisterCourierRequest registerCourierRequest)
@@ -43,9 +44,7 @@ namespace Rental.Api.Application.Commands.CourierCommands
             BirthDate = registerCourierRequest.BirthDate;
             DriverLicenseNumber = registerCourierRequest.DriverLicenseNumber;
             DriverLicenseType = registerCourierRequest.DriverLicenseType;
-            //DriverLicenseImageUrl = registerCourierRequest.DriverLicenseImageUrl;
-            //null;
-            DriverLicenseImageUrl = null; // valor inicial padrão
+            DriverLicenseImageUrl = null;
         }
 
         public override bool IsValid()
@@ -67,11 +66,17 @@ namespace Rental.Api.Application.Commands.CourierCommands
                     .MaximumLength(100).WithMessage("Courier full name cannot exceed 100 characters.");
 
                 RuleFor(c => c.Cnpj)
-                    .NotEmpty().WithMessage("Courier CNPJ must be provided.");
-
+                    .NotEmpty().WithMessage("Courier CNPJ must be provided.")
+                    .Length(CnpjValidation.CnpjLength)
+                        .WithMessage("CNPJ must have {ComparisonValue} characters, but {PropertyValue} was provided.")
+                    .Must(CnpjValidation.Validate)
+                        .WithMessage("Invalid CNPJ number.");
+              
                 RuleFor(c => c.BirthDate)
                     .LessThan(DateTime.UtcNow)
-                    .WithMessage("Birth date must be in the past.");
+                    .WithMessage("Birth date must be in the past.")
+                    .Must(ExtensionMethods.BeAtLeast18YearsOld)
+                    .WithMessage("Courier must be at least 18 years old.");
 
                 RuleFor(c => c.DriverLicenseNumber)
                     .NotEmpty().WithMessage("Driver license number must be provided.")

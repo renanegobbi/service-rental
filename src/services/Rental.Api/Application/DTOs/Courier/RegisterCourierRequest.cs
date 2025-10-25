@@ -1,4 +1,6 @@
-﻿namespace Rental.Api.Application.DTOs.Courier
+﻿using System;
+
+namespace Rental.Api.Application.DTOs.Courier
 {
     public class RegisterCourierRequest
     {

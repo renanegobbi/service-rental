@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>00dfae0b-3312-406c-ad14-efd77616c196</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..\..</DockerfileContext>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<WarningLevel>5</WarningLevel>
+		<NoWarn>1701;1702;1705;1591;1573xml</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<WarningLevel>5</WarningLevel>
+		<NoWarn>1701;1702;1705;1591;1573xml</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Application\Commands\Motocycle\**" />
+		<Content Remove="Application\Commands\Motocycle\**" />
+		<EmbeddedResource Remove="Application\Commands\Motocycle\**" />
+		<None Remove="Application\Commands\Motocycle\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Remove="wwwroot\favicon.ico" />
+	  <Content Remove="wwwroot\rent-motorcycle.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Swagger\UI\Index.html" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Swagger\UI\Index.html" />
+	  <EmbeddedResource Include="wwwroot\favicon.ico">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="wwwroot\rent-motorcycle.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.21" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.6.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.20" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.20" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.20">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.20" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.20" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.20">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\building blocks\Rental.Core\Rental.Core.csproj" />
+		<ProjectReference Include="..\..\building blocks\Rental.MessageBus\Rental.MessageBus.csproj" />
+		<ProjectReference Include="..\..\building blocks\Rental.Services\Rental.Services.csproj" />
+	</ItemGroup>
+
+</Project>

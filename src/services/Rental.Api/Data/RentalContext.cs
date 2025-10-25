@@ -5,6 +5,8 @@ using Rental.Core.Data;
 using Rental.Core.DomainObjects;
 using Rental.Core.Mediator;
 using Rental.Core.Messages;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Rental.Api.Data
 {
@@ -16,10 +18,11 @@ namespace Rental.Api.Data
             : base(options)
         {
             _mediatorHandler = mediatorHandler;
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-            ChangeTracker.AutoDetectChangesEnabled = false;
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+            ChangeTracker.AutoDetectChangesEnabled = true;
         }
 
+        public DbSet<DriverLicenseType> DriverLicenseTypes { get; set; }
         public DbSet<Courier> Couriers { get; set; }
         public DbSet<Motorcycle> Motorcycles { get; set; }
        

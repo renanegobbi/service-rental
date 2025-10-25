@@ -1,4 +1,6 @@
-﻿using Rental.Core.Utils;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Rental.Core.Utils;
 using Rental.MessageBus;
 
 namespace Rental.Api.Configuration

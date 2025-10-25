@@ -1,4 +1,5 @@
 ﻿using Rental.Core.Messages;
+using System;
 
 namespace Rental.Api.Application.Events.CourierEvent
 {

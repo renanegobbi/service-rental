@@ -1,4 +1,5 @@
 ﻿using Rental.Core.DomainObjects;
+using System;
 
 namespace Rental.Api.Entities
 {

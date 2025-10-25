@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Rental.Api.Application.Events.CourierEvent;
 using Rental.MessageBus;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Rental.Api.Application.Events
 {

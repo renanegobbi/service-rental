@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Rental.Core.Messages;
+using System;
 
 namespace Rental.Api.Application.Commands.MotocycleCommands
 {

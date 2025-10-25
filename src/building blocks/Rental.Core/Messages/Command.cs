@@ -1,10 +1,11 @@
 ﻿using FluentValidation.Results;
 using MediatR;
+using Rental.Core.Interfaces;
 using Rental.Core.Messages.Integration;
 
 namespace Rental.Core.Messages
 {
-    public abstract class Command : Message, IRequest<ValidationResult>
+    public abstract class Command : Message, IRequest<IResponse>
     {
         public DateTime Timestamp { get; private set; }
 
@@ -19,5 +20,6 @@ namespace Rental.Core.Messages
         {
             throw new NotImplementedException();
         }
+
     }
 }

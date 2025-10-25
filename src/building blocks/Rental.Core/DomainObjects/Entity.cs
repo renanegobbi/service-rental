@@ -1,4 +1,5 @@
 ﻿using Rental.Core.Messages;
+using System.Text.Json.Serialization;
 
 namespace Rental.Core.DomainObjects
 {
@@ -12,6 +13,8 @@ namespace Rental.Core.DomainObjects
         }
 
         private List<Event> _notifications;
+
+        [JsonIgnore]
         public IReadOnlyCollection<Event> Notifications => _notifications?.AsReadOnly();
 
         public void AddEvent(Event eventItem)

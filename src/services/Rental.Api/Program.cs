@@ -1,3 +1,8 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Rental.Api.Configuration;
 using Rental.Services.Storage;
 
@@ -21,7 +26,7 @@ namespace Rental.Api
             }
 
             builder.Services.AddApiConfiguration(builder.Configuration);
-            builder.Services.AddSwaggerConfiguration();
+            builder.Services.AddSwaggerConfiguration(builder.Environment, builder.Configuration);
             builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(typeof(Program).Assembly); });
             builder.Services.RegisterServices();
             builder.Services.AddMessageBusConfiguration(builder.Configuration);
@@ -29,7 +34,8 @@ namespace Rental.Api
 
             var app = builder.Build();
 
-            app.UseSwaggerConfiguration();
+            var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+            app.UseSwaggerConfiguration(provider, app.Environment);
             app.UseApiConfiguration(app.Environment);
 
             app.Run();

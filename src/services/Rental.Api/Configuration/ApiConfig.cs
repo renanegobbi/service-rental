@@ -1,5 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Rental.Api.Data;
+using System.Net;
+using System.Text.Json.Serialization;
 
 namespace Rental.Api.Configuration
 {
@@ -7,10 +14,22 @@ namespace Rental.Api.Configuration
     {
         public static void AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
+
+            services.AddRouting(options => options.LowercaseUrls = true);
+
+            services
+                .AddControllers(options => options.Filters.Add(typeof(CustomModelStateValidationFilterAttribute)))
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
+
+            services.Configure<ApiBehaviorOptions>(options =>
+                options.SuppressModelStateInvalidFilter = true
+            );
+
             services.AddDbContext<RentalContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddControllers();
 
             services.AddCors(options =>
             {
@@ -21,15 +40,25 @@ namespace Rental.Api.Configuration
                             .AllowAnyMethod()
                             .AllowAnyHeader());
             });
+
+            services.AddResponseCompression(options =>
+            {
+                options.EnableForHttps = true;
+            });
         }
         public static void UseApiConfiguration(this IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
+            app.UseExceptionHandler($"/feedback/{(int)HttpStatusCode.InternalServerError}");
+            app.UseStatusCodePagesWithReExecute("/feedback/{0}");
 
             app.UseHttpsRedirection();
+
+            app.UsePathBase("/api/rentalservice");
+
+            app.UseResponseCompression();
 
             app.UseRouting();
 

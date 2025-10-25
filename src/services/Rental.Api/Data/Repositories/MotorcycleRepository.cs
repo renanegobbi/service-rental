@@ -2,6 +2,9 @@
 using Rental.Api.Data.Repositories.Interfaces;
 using Rental.Api.Entities;
 using Rental.Core.Data;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Rental.Api.Data.Repositories
 {

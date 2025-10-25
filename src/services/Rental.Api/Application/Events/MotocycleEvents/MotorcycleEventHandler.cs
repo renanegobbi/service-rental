@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using Rental.Core.Messages.Integration.Rental;
 using Rental.MessageBus;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Rental.Api.Application.Events.MotocycleEvents
 {

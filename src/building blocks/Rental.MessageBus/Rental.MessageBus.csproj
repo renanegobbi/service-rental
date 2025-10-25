@@ -15,8 +15,4 @@
     <ProjectReference Include="..\Rental.Core\Rental.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Contracts\Interfaces\" />
-  </ItemGroup>
-
 </Project>
