@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Rental.Api.Application.Queries.DriverLicenseTypeQueries.GetAll
 {
-    public class GetAllDriverLicenseTypeQueryHandler : IRequestHandler<GetAllDriverLicenseTypeQuery, PagedResult<GetAllDriverLicenseTypeResponse>>
+    public class GetAllRentalPlanQueryHandler : IRequestHandler<GetAllDriverLicenseTypeQuery, PagedResult<GetAllDriverLicenseTypeResponse>>
     {
         private readonly IDriverLicenseTypeRepository _repo;
 
-        public GetAllDriverLicenseTypeQueryHandler(IDriverLicenseTypeRepository repo)
+        public GetAllRentalPlanQueryHandler(IDriverLicenseTypeRepository repo)
         {
             _repo = repo;
         }

@@ -3,7 +3,7 @@ using System;
 
 namespace Rental.Api.Application.DTOs.DriverLicenseType
 {
-    public class AddDriverLicenseTypeResponse: IResponse
+    public class AddDriverLicenseTypeResponse : IResponse
     {
         public Guid Id { get; set; }
         public string Code { get; set; }

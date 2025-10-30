@@ -22,14 +22,14 @@ namespace Rental.Core.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class CommonMessages {
+    public class RentalPlanMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal CommonMessages() {
+        internal RentalPlanMessages() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Rental.Core.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rental.Core.Resources.CommonMessages", typeof(CommonMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rental.Core.Resources.RentalPlanMessages", typeof(RentalPlanMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,47 +61,29 @@ namespace Rental.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resource added successfully..
+        ///   Looks up a localized string similar to Rental Plan deleted successfully..
         /// </summary>
-        public static string Add_Successful {
+        public static string RentalPlan_Deleted_Successfully {
             get {
-                return ResourceManager.GetString("Add_Successful", resourceCulture);
+                return ResourceManager.GetString("RentalPlan_Deleted_Successfully", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resource deleted successfully..
+        ///   Looks up a localized string similar to Rental Plan registered successfully..
         /// </summary>
-        public static string Delete_Successful {
+        public static string RentalPlan_Registered_Successfully {
             get {
-                return ResourceManager.GetString("Delete_Successful", resourceCulture);
+                return ResourceManager.GetString("RentalPlan_Registered_Successfully", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occurred while saving data to the database..
+        ///   Looks up a localized string similar to Rental Plan updated successfully..
         /// </summary>
-        public static string Error_Persisting_Data {
+        public static string RentalPlan_Updated_Successfully {
             get {
-                return ResourceManager.GetString("Error_Persisting_Data", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Query completed successfully..
-        /// </summary>
-        public static string Query_Successful {
-            get {
-                return ResourceManager.GetString("Query_Successful", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Resource updated successfully..
-        /// </summary>
-        public static string Update_Successful {
-            get {
-                return ResourceManager.GetString("Update_Successful", resourceCulture);
+                return ResourceManager.GetString("RentalPlan_Updated_Successfully", resourceCulture);
             }
         }
     }

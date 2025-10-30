@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Rental.Api.Data;
 using Rental.Api.Data.Repositories;
 using Rental.Api.Data.Repositories.Interfaces;
+using Rental.Api.Infrastructure.Repository;
 using Rental.Core.Mediator;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -28,6 +29,7 @@ namespace Rental.Api.Configuration
             );
 
             services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
+            services.AddScoped<IRentalPlanRepository, RentalPlanRepository>();
             services.AddScoped<ICourierRepository, CourierRepository>();
             services.AddScoped<IDriverLicenseTypeRepository, DriverLicenseTypeRepository>();
             services.AddScoped<RentalContext>();

@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Rental.Api.Application.Commands.DriverLicenseTypeCommands.Delete
 {
-    public class DeleteDriverLicenseTypeCommandHandler : CommandHandler,
+    public class DeleteRentalPlanCommandHandler : CommandHandler,
     IRequestHandler<DeleteDriverLicenseTypeCommand, IResponse>
     {
         private readonly IDriverLicenseTypeRepository _repository;
 
-        public DeleteDriverLicenseTypeCommandHandler(IDriverLicenseTypeRepository repository)
+        public DeleteRentalPlanCommandHandler(IDriverLicenseTypeRepository repository)
         {
             _repository = repository;
         }

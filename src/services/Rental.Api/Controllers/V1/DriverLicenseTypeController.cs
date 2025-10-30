@@ -105,7 +105,7 @@ namespace Rental.Api.Controllers.V1
         [HttpDelete]
         [AllowAnonymous]
         [Route("v{version:apiVersion}/[controller]/delete")]
-        [SwaggerRequestExample(typeof(AddDriverLicenseTypeRequest), typeof(DeleteDriverLicenseTypeResponseExamplo))]
+        [SwaggerRequestExample(typeof(DeleteDriverLicenseTypeRequest), typeof(DeleteDriverLicenseTypeResponseExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(DeleteDriverLicenseTypeResponseExamplo))]
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Delete([FromBody] DeleteDriverLicenseTypeRequest request)

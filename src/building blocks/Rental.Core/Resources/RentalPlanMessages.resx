@@ -117,19 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Query_Successful" xml:space="preserve">
-    <value>Query completed successfully.</value>
+  <data name="RentalPlan_Registered_Successfully" xml:space="preserve">
+    <value>Rental Plan registered successfully.</value>
   </data>
-  <data name="Add_Successful" xml:space="preserve">
-    <value>Resource added successfully.</value>
+  <data name="RentalPlan_Updated_Successfully" xml:space="preserve">
+    <value>Rental Plan updated successfully.</value>
   </data>
-  <data name="Update_Successful" xml:space="preserve">
-    <value>Resource updated successfully.</value>
-  </data>
-  <data name="Delete_Successful" xml:space="preserve">
-    <value>Resource deleted successfully.</value>
-  </data>
-  <data name="Error_Persisting_Data" xml:space="preserve">
-    <value>An error occurred while saving data to the database.</value>
+  <data name="RentalPlan_Deleted_Successfully" xml:space="preserve">
+    <value>Rental Plan deleted successfully.</value>
   </data>
 </root>

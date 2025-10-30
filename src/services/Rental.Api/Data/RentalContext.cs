@@ -23,6 +23,7 @@ namespace Rental.Api.Data
         }
 
         public DbSet<DriverLicenseType> DriverLicenseTypes { get; set; }
+        public DbSet<RentalPlan> RentalPlans { get; set; }
         public DbSet<Courier> Couriers { get; set; }
         public DbSet<Motorcycle> Motorcycles { get; set; }
        
