@@ -55,9 +55,9 @@ namespace Rental.Api.Controllers.V1
         {
             var query = new GetAllDriverLicenseTypeQuery(request);
             if (!query.IsValid()) return ApiResponse(query.ValidationResult);
-            var result = await _mediatorHandler.SendQuery(query);
+            var response = await _mediatorHandler.SendQuery(query);
             
-            return ApiResponse(result, CommonMessages.Query_Successful);
+            return ApiResponse(response, CommonMessages.Query_Successful);
         }
 
         /// <summary>
@@ -76,9 +76,9 @@ namespace Rental.Api.Controllers.V1
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Add([FromBody] AddDriverLicenseTypeRequest request)
         {
-            var result = await _mediatorHandler.SendCommand(new AddDriverLicenseTypeCommand(request));
+            var response = await _mediatorHandler.SendCommand(new AddDriverLicenseTypeCommand(request));
             
-            return ApiResponse(result);
+            return ApiResponse(response);
         }
 
         /// <summary>
@@ -93,9 +93,9 @@ namespace Rental.Api.Controllers.V1
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Update([FromBody] UpdateDriverLicenseTypeRequest request)
         {
-            var result = await _mediatorHandler.SendCommand(new UpdateDriverLicenseTypeCommand(request));
+            var response = await _mediatorHandler.SendCommand(new UpdateDriverLicenseTypeCommand(request));
 
-            return ApiResponse(result);
+            return ApiResponse(response);
         }
 
         /// <summary>
@@ -110,9 +110,9 @@ namespace Rental.Api.Controllers.V1
         [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Delete([FromBody] DeleteDriverLicenseTypeRequest request)
         {
-            var result = await _mediatorHandler.SendCommand(new DeleteDriverLicenseTypeCommand(request));
+            var response = await _mediatorHandler.SendCommand(new DeleteDriverLicenseTypeCommand(request));
 
-            return ApiResponse(result);
+            return ApiResponse(response);
         }
     }
 

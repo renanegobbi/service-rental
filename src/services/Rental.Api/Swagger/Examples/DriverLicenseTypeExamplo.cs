@@ -91,7 +91,7 @@ namespace Rental.Api.Swagger.Examples
     {
         public ApiResponse GetExamples() => new ApiResponse(
             success: true,
-            messages: new[] { CommonMessages.Add_Successful },
+            messages: new[] { DriverLicenseTypeMessages.DriverLicenseType_Registered_Successfully },
             data: new AddDriverLicenseTypeResponse()
             {
                 Id = Guid.Parse("a39b592b-2116-4843-8959-d4919c092a9d"),
@@ -118,7 +118,7 @@ namespace Rental.Api.Swagger.Examples
     {
         public ApiResponse GetExamples() => new ApiResponse(
             success: true,
-            messages: new[] { CommonMessages.Update_Successful },
+            messages: new[] { DriverLicenseTypeMessages.DriverLicenseType_Updated_Successfully },
             data: new UpdateDriverLicenseTypeResponse()
             {
                 Id = Guid.Parse("a39b592b-2116-4843-8959-d4919c092a9d"),

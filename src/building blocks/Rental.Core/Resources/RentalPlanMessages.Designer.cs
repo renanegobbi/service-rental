@@ -70,6 +70,15 @@ namespace Rental.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rental Plan ID not found..
+        /// </summary>
+        public static string RentalPlan_ID_Not_Found {
+            get {
+                return ResourceManager.GetString("RentalPlan_ID_Not_Found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rental Plan registered successfully..
         /// </summary>
         public static string RentalPlan_Registered_Successfully {

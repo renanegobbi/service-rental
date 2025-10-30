@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using MediatR;
 using Rental.Api.Application.DTOs.DriverLicenseType;
+using Rental.Api.Application.Extensions;
 using Rental.Api.Data.Repositories.Interfaces;
 using Rental.Api.Entities;
 using Rental.Core.DomainObjects.Enums;
@@ -35,25 +36,15 @@ namespace Rental.Api.Application.Commands.DriverLicenseTypeCommands.Add
             if (!ValidationResult.IsValid)
                 return Response.Fail(ValidationResult);
 
-            var driverLicenseType = new DriverLicenseType(
-                code: command.Code.Trim().ToUpper(), 
-                description: command.Description, 
-                isActive: true, 
-                createdAt: DateTime.Now);
+            var driverLicenseType = command.ToDriverLicenseType();
 
             _driverlicenseTypeRepository.Add(driverLicenseType);
-            await _driverlicenseTypeRepository.UnitOfWork.Commit();
+            var success = await _driverlicenseTypeRepository.UnitOfWork.Commit();
 
-            var addDriverLicenseTypeResponse = new AddDriverLicenseTypeResponse
-            {
-                Id = driverLicenseType.Id,
-                Code = driverLicenseType.Code,
-                Description = driverLicenseType.Description,
-                IsActive = driverLicenseType.IsActive,
-                CreatedAt = driverLicenseType.CreatedAt
-            };
+            if (!success)
+                return Response.Fail(CommonMessages.Error_Persisting_Data);
 
-            return Response.Ok(DriverLicenseTypeMessages.DriverLicenseType_Registered_Successfully, addDriverLicenseTypeResponse);
+            return Response.Ok(DriverLicenseTypeMessages.DriverLicenseType_Registered_Successfully, driverLicenseType.ToAddDriverLicenseTypeResponse());
         }
 
         private async Task ValidateBusinessRulesAsync(AddDriverLicenseTypeCommand command)

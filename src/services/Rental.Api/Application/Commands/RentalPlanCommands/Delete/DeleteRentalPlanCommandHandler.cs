@@ -28,7 +28,7 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Delete
             var rentalPlan = await _rentalPlanRepository.GetByIdAsync(command.Id);
 
             if (rentalPlan is null)
-                return Response.Fail(RentalPlanMessages.RentalPlan_Deleted_Successfully);
+                return Response.Fail(RentalPlanMessages.RentalPlan_ID_Not_Found);
 
             _rentalPlanRepository.Delete(rentalPlan);            
             var success = await _rentalPlanRepository.UnitOfWork.Commit();

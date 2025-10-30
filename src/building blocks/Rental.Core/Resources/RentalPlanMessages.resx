@@ -126,4 +126,7 @@
   <data name="RentalPlan_Deleted_Successfully" xml:space="preserve">
     <value>Rental Plan deleted successfully.</value>
   </data>
+  <data name="RentalPlan_ID_Not_Found" xml:space="preserve">
+    <value>Rental Plan ID not found.</value>
+  </data>
 </root>

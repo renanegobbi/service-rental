@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Rental.Api.Application.DTOs.DriverLicenseType;
+using Rental.Api.Application.Extensions;
 using Rental.Api.Data.Repositories.Interfaces;
 using Rental.Core.Interfaces;
 using Rental.Core.Messages;
@@ -25,25 +25,19 @@ namespace Rental.Api.Application.Commands.DriverLicenseTypeCommands.Delete
             if (!command.IsValid())
                 return Response.Fail(command.ValidationResult);
 
-            var entity = await _repository.GetByIdAsync(command.Id);
+            var driverLicenseType = await _repository.GetByIdAsync(command.Id);
 
-            if (entity is null)
+            if (driverLicenseType is null)
                 return Response.Fail(DriverLicenseTypeMessages.DriverLicenseType_ID_Not_Found);
 
-            entity.RemoveDriverLicenseType();
-            _repository.Update(entity);
-            await _repository.UnitOfWork.Commit();
+            driverLicenseType.RemoveDriverLicenseType();
+            _repository.Update(driverLicenseType);
+            var success = await _repository.UnitOfWork.Commit();
 
-            var deleteDriverLicenseTypeResponse = new DeleteDriverLicenseTypeResponse
-            {
-                Id = entity.Id,
-                Code = entity.Code,
-                Description = entity.Description,
-                IsActive = entity.IsActive,
-                CreatedAt = entity.CreatedAt
-            };
+            if (!success)
+                return Response.Fail(CommonMessages.Error_Persisting_Data);
 
-            return Response.Ok(message: DriverLicenseTypeMessages.DriverLicenseType_Deleted_Successfully, data: deleteDriverLicenseTypeResponse);
+            return Response.Ok(DriverLicenseTypeMessages.DriverLicenseType_Deleted_Successfully, driverLicenseType.ToDeleteDriverLicenseTypeResponse());
         }
     }
 

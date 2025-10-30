@@ -1,8 +1,7 @@
 ﻿using FluentValidation.Results;
 using MediatR;
-using Rental.Api.Application.DTOs.DriverLicenseType;
+using Rental.Api.Application.Extensions;
 using Rental.Api.Data.Repositories.Interfaces;
-using Rental.Core.Data;
 using Rental.Core.Interfaces;
 using Rental.Core.Messages;
 using Rental.Core.Resources;
@@ -27,33 +26,23 @@ namespace Rental.Api.Application.Commands.DriverLicenseTypeCommands.Update
             if (!command.IsValid())
                 return Response.Fail(command.ValidationResult);
 
-            await ValidateBusinessRulesAsync(command);
-
-            if (!ValidationResult.IsValid)
-                return Response.Fail(ValidationResult);
-
             var driverLicenseType = await _driverlicenseTypeRepository.GetByIdAsync(command.Id);
+            if (driverLicenseType == null)
+                return Response.Fail($"The driver license type with ID '{command.Id}' was not found.");
 
-            if (driverLicenseType is null)
-                AddError("The driver license type with the specified ID does not exist.");
+            await ValidateBusinessRulesAsync(command);
 
             if (!ValidationResult.IsValid)
                 return Response.Fail(ValidationResult);
 
             driverLicenseType.Update(command.Code.Trim().ToUpper(), command.Description);
             _driverlicenseTypeRepository.Update(driverLicenseType);
-            await _driverlicenseTypeRepository.UnitOfWork.Commit();
+            var success = await _driverlicenseTypeRepository.UnitOfWork.Commit();
 
-            var updateDriverLicenseTypeResponse = new UpdateDriverLicenseTypeResponse
-            {
-                Id = driverLicenseType.Id,
-                Code = driverLicenseType.Code,
-                Description = driverLicenseType.Description,
-                IsActive = driverLicenseType.IsActive,
-                CreatedAt = driverLicenseType.CreatedAt
-            };
+            if (!success)
+                return Response.Fail(CommonMessages.Error_Persisting_Data);
 
-            return Response.Ok(DriverLicenseTypeMessages.DriverLicenseType_Updated_Successfully, updateDriverLicenseTypeResponse);
+            return Response.Ok(DriverLicenseTypeMessages.DriverLicenseType_Updated_Successfully, driverLicenseType.ToUpdateDriverLicenseTypeResponse());
         }
 
         private async Task ValidateBusinessRulesAsync(UpdateDriverLicenseTypeCommand command)
