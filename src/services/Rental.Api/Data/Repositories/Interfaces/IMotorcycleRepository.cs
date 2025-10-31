@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Rental.Api.Data.Repositories.Interfaces
 {
-    public interface IMotorcycleRepository : IDisposable
+    public interface IMotorcycleRepository 
     {
         IUnitOfWork UnitOfWork { get; }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Rental.Api.Data.Repositories.Interfaces
 {
-    public interface IDriverLicenseTypeRepository : IDisposable
+    public interface IDriverLicenseTypeRepository 
     {
         IUnitOfWork UnitOfWork { get; }
 

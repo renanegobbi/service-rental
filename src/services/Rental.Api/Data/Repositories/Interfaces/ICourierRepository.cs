@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Rental.Api.Data.Repositories.Interfaces
 {
-    public interface ICourierRepository : IDisposable
+    public interface ICourierRepository
     {
         IUnitOfWork UnitOfWork { get; }
 

@@ -124,9 +124,5 @@ namespace Rental.Api.Data.Repositories
             _context.DriverLicenseTypes.Remove(driverLicenseType);
         }
 
-        public void Dispose()
-        {
-            _context?.Dispose();
-        }
     }
 }

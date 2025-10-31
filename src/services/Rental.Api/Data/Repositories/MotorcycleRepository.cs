@@ -53,9 +53,5 @@ namespace Rental.Api.Data.Repositories
             _context.Motorcycles.Remove(motorcycle);
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
     }
 }

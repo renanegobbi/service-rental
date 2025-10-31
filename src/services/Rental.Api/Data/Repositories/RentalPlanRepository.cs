@@ -127,6 +127,5 @@ namespace Rental.Api.Infrastructure.Repository
             _context.RentalPlans.Remove(plan);
         }
 
-        public void Dispose() => _context.Dispose();
     }
 }

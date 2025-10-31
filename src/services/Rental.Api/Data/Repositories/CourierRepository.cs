@@ -59,9 +59,5 @@ namespace Rental.Api.Data.Repositories
             _context.Couriers.Remove(courier);
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
     }
 }
