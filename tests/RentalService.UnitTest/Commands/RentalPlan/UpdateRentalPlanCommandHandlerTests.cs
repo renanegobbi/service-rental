@@ -3,10 +3,10 @@ using Moq;
 using Rental.Api.Application.Commands.RentalPlanCommands.Update;
 using Rental.Core.Resources;
 using Rental.Core.Responses;
-using RentalService.UnitTest.Base.Fixtures.Commands;
+using RentalService.Tests.Unit.Base.Fixtures.Commands;
 using EntityRentalPlan = Rental.Api.Entities.RentalPlan;
 
-namespace RentalService.UnitTest.Commands.RentalPlan
+namespace RentalService.Tests.Unit.Commands.RentalPlan
 {
     public class UpdateRentalPlanCommandHandlerTests : IClassFixture<RentalPlanCommandFixture>
     {

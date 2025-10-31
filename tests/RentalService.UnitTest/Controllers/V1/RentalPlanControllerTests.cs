@@ -9,9 +9,9 @@ using Rental.Api.Application.Queries.RentalPlanQueries.GetAll;
 using Rental.Core.Pagination;
 using Rental.Core.Resources;
 using Rental.Core.Responses;
-using RentalService.UnitTest.Base.Fixtures.Controllers;
+using RentalService.Tests.Unit.Base.Fixtures.Controllers;
 
-namespace RentalService.UnitTest.Controllers.V1
+namespace RentalService.Tests.Unit.Controllers.V1
 {
     public class RentalPlanControllerTests : IClassFixture<RentalPlanControllerFixture>
     {
@@ -20,6 +20,7 @@ namespace RentalService.UnitTest.Controllers.V1
         public RentalPlanControllerTests(RentalPlanControllerFixture fixture)
         {
             _fixture = fixture;
+            _fixture.Reset();
         }
 
         [Fact]

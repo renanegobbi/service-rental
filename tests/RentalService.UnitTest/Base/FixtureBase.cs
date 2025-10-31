@@ -1,7 +1,7 @@
 ﻿using Moq;
 using System.Linq.Expressions;
 
-namespace RentalService.UnitTest.Base
+namespace RentalService.Tests.Unit.Base
 {
     /// <summary>
     /// Base fixture for tests, ensures full isolation between executions.

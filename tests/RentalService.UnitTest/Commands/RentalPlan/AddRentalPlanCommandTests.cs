@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Rental.Api.Application.Commands.RentalPlanCommands.Add;
 
-namespace RentalService.UnitTest.Commands.RentalPlan
+namespace RentalService.Tests.Unit.Commands.RentalPlan
 {
     public class AddRentalPlanCommandTests
     {

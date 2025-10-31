@@ -3,7 +3,7 @@ using Rental.Api.Application.Commands.RentalPlanCommands.Update;
 using Rental.Api.Application.DTOs.RentalPlan;
 using System;
 
-namespace RentalService.UnitTest.Commands.RentalPlan
+namespace RentalService.UnitTests.UnitTest.Commands.RentalPlan
 {
     public class UpdateRentalPlanCommandTests
     {

@@ -2,10 +2,10 @@
 using Moq;
 using Rental.Api.Application.DTOs.RentalPlan;
 using Rental.Api.Application.Queries.RentalPlanQueries.GetAll;
-using RentalService.UnitTest.Base.Fixtures.Queries;
+using RentalService.Tests.Unit.Base.Fixtures.Queries;
 using EntityRentalPlan = Rental.Api.Entities.RentalPlan;
 
-namespace RentalService.UnitTest.Queries.RentalPlan
+namespace RentalService.Tests.Unit.Queries.RentalPlan
 {
     public class GetAllRentalPlanQueryHandlerTests : IClassFixture<RentalPlanQueryFixture>
     {
@@ -19,6 +19,8 @@ namespace RentalService.UnitTest.Queries.RentalPlan
         [Fact]
         public async Task Handle_ShouldReturnPagedResult_WhenRepositoryReturnsData()
         {
+            _fixture.Reset();
+
             // Arrange
             var request = new GetAllRentalPlanRequest { PageIndex = 1, PageSize = 10 };
             var query = new GetAllRentalPlanQuery(request);
@@ -50,6 +52,8 @@ namespace RentalService.UnitTest.Queries.RentalPlan
         [Fact]
         public async Task Handle_ShouldReturnEmptyPagedResult_WhenNoDataFound()
         {
+            _fixture.Reset();
+
             // Arrange
             var request = new GetAllRentalPlanRequest { PageIndex = 1, PageSize = 10 };
             var query = new GetAllRentalPlanQuery(request);

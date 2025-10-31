@@ -3,7 +3,7 @@ using Rental.Api.Controllers.V1;
 using Rental.Core.Mediator;
 using Rental.Core.Responses;
 
-namespace RentalService.UnitTest.Base.Fixtures.Controllers
+namespace RentalService.Tests.Unit.Base.Fixtures.Controllers
 {
     public class RentalPlanControllerFixture : FixtureBase
     {

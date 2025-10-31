@@ -5,7 +5,7 @@ using Rental.Api.Application.Commands.RentalPlanCommands.Delete;
 using Rental.Api.Infrastructure.Repository;
 using Rental.Api.Entities;
 
-namespace RentalService.UnitTest.Base.Fixtures.Commands
+namespace RentalService.Tests.Unit.Base.Fixtures.Commands
 {
     public class RentalPlanCommandFixture : FixtureBase
     {

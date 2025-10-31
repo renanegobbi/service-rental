@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.Notification", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3311D7B2-1653-4009-A835-C18AE65C2EFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentalService.UnitTest", "tests\RentalService.UnitTest\RentalService.UnitTest.csproj", "{76F93EEE-D60E-4A92-8B14-5429E5AF8CDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentalService.Tests.Unit", "tests\RentalService.UnitTest\RentalService.Tests.Unit.csproj", "{76F93EEE-D60E-4A92-8B14-5429E5AF8CDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
