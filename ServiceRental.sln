@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Building Blocks", "Building
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{F5FFB85C-0367-4100-99DC-E42D6DC68383}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.Core", "src\building blocks\Rental.Core\Rental.Core.csproj", "{75B0DB26-180A-47B7-B4B0-FB864351D91A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.Core", "src\building blocks\Rental.Core\Rental.Core.csproj", "{75B0DB26-180A-47B7-B4B0-FB864351D91A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{B3D140E2-DB60-4F0B-BF25-082F00E13CC3}"
 EndProject
@@ -17,13 +17,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageBus", "MessageBus", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{641D1F49-7366-4DC6-A7CA-0110C8D40EC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.MessageBus", "src\building blocks\Rental.MessageBus\Rental.MessageBus.csproj", "{FD46DDF0-DE85-48FE-B10D-700D55C0D14B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.MessageBus", "src\building blocks\Rental.MessageBus\Rental.MessageBus.csproj", "{FD46DDF0-DE85-48FE-B10D-700D55C0D14B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.Services", "src\building blocks\Rental.Services\Rental.Services.csproj", "{1E0CC5DA-56B9-4A51-AEF6-2680FF27A6FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.Services", "src\building blocks\Rental.Services\Rental.Services.csproj", "{1E0CC5DA-56B9-4A51-AEF6-2680FF27A6FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.Api", "src\services\Rental.Api\Rental.Api.csproj", "{1D4B7160-4D88-4BF0-8C1C-4451E07A0027}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.Api", "src\services\Rental.Api\Rental.Api.csproj", "{1D4B7160-4D88-4BF0-8C1C-4451E07A0027}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rental.Notification", "src\services\Rental.Notification\Rental.Notification.csproj", "{C23421C0-2F39-470F-A7C8-A3939D5566B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rental.Notification", "src\services\Rental.Notification\Rental.Notification.csproj", "{C23421C0-2F39-470F-A7C8-A3939D5566B9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3311D7B2-1653-4009-A835-C18AE65C2EFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentalService.UnitTest", "tests\RentalService.UnitTest\RentalService.UnitTest.csproj", "{76F93EEE-D60E-4A92-8B14-5429E5AF8CDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,10 @@ Global
 		{C23421C0-2F39-470F-A7C8-A3939D5566B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C23421C0-2F39-470F-A7C8-A3939D5566B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C23421C0-2F39-470F-A7C8-A3939D5566B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76F93EEE-D60E-4A92-8B14-5429E5AF8CDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76F93EEE-D60E-4A92-8B14-5429E5AF8CDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76F93EEE-D60E-4A92-8B14-5429E5AF8CDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76F93EEE-D60E-4A92-8B14-5429E5AF8CDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +74,8 @@ Global
 		{1E0CC5DA-56B9-4A51-AEF6-2680FF27A6FD} = {641D1F49-7366-4DC6-A7CA-0110C8D40EC7}
 		{1D4B7160-4D88-4BF0-8C1C-4451E07A0027} = {F5FFB85C-0367-4100-99DC-E42D6DC68383}
 		{C23421C0-2F39-470F-A7C8-A3939D5566B9} = {F5FFB85C-0367-4100-99DC-E42D6DC68383}
+		{3311D7B2-1653-4009-A835-C18AE65C2EFE} = {554E6E4A-27D5-4092-BED9-5D92E0B214DB}
+		{76F93EEE-D60E-4A92-8B14-5429E5AF8CDC} = {3311D7B2-1653-4009-A835-C18AE65C2EFE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FB9CBAFE-C6AA-45EA-8E5B-D47BFD2540FB}

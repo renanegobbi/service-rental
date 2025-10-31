@@ -28,7 +28,7 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Update
 
             var rentalPlan = await _rentalPlanRepository.GetByIdAsync(command.Id);
             if (rentalPlan == null)
-                return Response.Fail($"Rental plan with ID '{command.Id}' was not found.");
+                return Response.Fail(RentalPlanMessages.RentalPlan_ID_Not_Found);
 
             await ValidateBusinessRulesAsync(command);
 
@@ -48,10 +48,13 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Update
         private async Task ValidateBusinessRulesAsync(UpdateRentalPlanCommand command)
         {
             var existingPlans = await _rentalPlanRepository.GetAllAsync();
-            var duplicate = existingPlans.Any(p => p.Days == command.Days && p.Id != command.Id);
+
+            var plan = await _rentalPlanRepository.GetByIdAsync(command.Id);
+
+            var duplicate = existingPlans.Any(p => p.Days == plan.Days && p.Id != plan.Id);
 
             if (duplicate)
-                AddError($"Another rental plan with {command.Days} days already exists.");
+                AddError($"Another rental plan with {plan.Days} days already exists.");
         }
     }
 }

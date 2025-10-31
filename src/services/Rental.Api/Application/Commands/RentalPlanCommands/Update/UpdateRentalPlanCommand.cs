@@ -8,7 +8,6 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Update
     public class UpdateRentalPlanCommand : Command
     {
         public Guid Id { get; private set; }
-        public int Days { get; private set; }
         public decimal DailyRate { get; private set; }
         public decimal PenaltyPercent { get; private set; }
         public string? Description { get; private set; }
