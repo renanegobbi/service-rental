@@ -31,12 +31,14 @@ namespace Rental.Api
             builder.Services.RegisterServices();
             builder.Services.AddMessageBusConfiguration(builder.Configuration);
             builder.Services.AddStorage(builder.Configuration);
+            builder.Services.AddHealthCheckConfiguration(builder.Configuration);
 
             var app = builder.Build();
 
             var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
             app.UseSwaggerConfiguration(provider, app.Environment);
             app.UseApiConfiguration(app.Environment);
+            app.UseHealthCheckConfiguration();
 
             app.Run();
         }
