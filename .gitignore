@@ -416,3 +416,10 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# SonarQube
+.sonarqube/
+
+# Build output
+TestResults/
+coverage.cobertura.xml
