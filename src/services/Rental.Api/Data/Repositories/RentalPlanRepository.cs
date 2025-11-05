@@ -8,103 +8,112 @@ using System;
 using Rental.Api.Application.Queries.RentalPlanQueries.GetAll;
 using Rental.Core.Application.Queries.Enums;
 using System.Linq;
+using Rental.Api.Configuration;
+using Rental.Api.Data.Cache;
+using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace Rental.Api.Infrastructure.Repository
 {
     public class RentalPlanRepository : IRentalPlanRepository
     {
         private readonly RentalContext _context;
+        private readonly ICacheService<RentalPlan> _cache;
+        private readonly CacheDefaults _defaults;
+        private readonly ILogger<RentalPlanRepository> _logger;
 
-        public RentalPlanRepository(RentalContext context)
+        public RentalPlanRepository(RentalContext context,
+                                    ICacheService<RentalPlan> cache,
+                                    CacheDefaults defaults, ILogger<RentalPlanRepository> logger)
         {
             _context = context;
+            _cache = cache;
+            _defaults = defaults;
+            _logger = logger;
         }
 
         public IUnitOfWork UnitOfWork => _context;
 
         public async Task<Tuple<RentalPlan[], double>> GetAllAsync(GetAllRentalPlanQuery query)
         {
-            var registros = _context.RentalPlans.AsNoTracking().AsQueryable();
+            var cacheKey = BuildCacheKey(query);
 
-            if (query.StartDate.HasValue)
-                registros = registros.Where(x => x.CreatedAt >= query.StartDate.Value);
-
-            if (query.EndDate.HasValue)
-                registros = registros.Where(x => x.CreatedAt <= query.EndDate.Value);
-
-            if (query.Days.HasValue)
-                registros = registros.Where(f => f.Days == query.Days.Value);
-
-            if (!string.IsNullOrEmpty(query.Description))
-                registros = registros.Where(f => EF.Functions.ILike(f.Description, $"%{query.Description}%"));
-
-            if (query.MinDailyRate.HasValue)
-                registros = registros.Where(f => f.DailyRate >= query.MinDailyRate.Value);
-
-            if (query.MaxDailyRate.HasValue)
-                registros = registros.Where(f => f.DailyRate <= query.MaxDailyRate.Value);
-
-            if (query.MinPenaltyPercent.HasValue)
-                registros = registros.Where(f => f.PenaltyPercent >= query.MinPenaltyPercent.Value);
-
-            if (query.MaxPenaltyPercent.HasValue)
-                registros = registros.Where(f => f.PenaltyPercent <= query.MaxPenaltyPercent.Value);
-
-            switch (query.OrderBy)
+            var items = await _cache.GetByKeyAsync(cacheKey, async () =>
             {
-                case RentalPlanOrderBy.Days:
-                    registros = query.SortDirection == "DESC"
-                        ? registros.OrderByDescending(f => f.Days)
-                        : registros.OrderBy(f => f.Days);
-                    break;
+                var records = _context.RentalPlans.AsNoTracking().AsQueryable();
 
-                case RentalPlanOrderBy.DailyRate:
-                    registros = query.SortDirection == "DESC"
-                        ? registros.OrderByDescending(f => f.DailyRate)
-                        : registros.OrderBy(f => f.DailyRate);
-                    break;
+                if (query.StartDate.HasValue)
+                    records = records.Where(x => x.CreatedAt >= query.StartDate.Value);
 
-                case RentalPlanOrderBy.PenaltyPercent:
-                    registros = query.SortDirection == "DESC"
-                        ? registros.OrderByDescending(f => f.PenaltyPercent)
-                        : registros.OrderBy(f => f.PenaltyPercent);
-                    break;
+                if (query.EndDate.HasValue)
+                    records = records.Where(x => x.CreatedAt <= query.EndDate.Value);
 
-                case RentalPlanOrderBy.Description:
-                    registros = query.SortDirection == "DESC"
-                        ? registros.OrderByDescending(f => f.Description)
-                        : registros.OrderBy(f => f.Description);
-                    break;
+                if (query.Days.HasValue)
+                    records = records.Where(f => f.Days == query.Days.Value);
 
-                case RentalPlanOrderBy.CreatedAt:
-                    registros = query.SortDirection == "DESC"
-                        ? registros.OrderByDescending(f => f.CreatedAt)
-                        : registros.OrderBy(f => f.CreatedAt);
-                    break;
+                if (!string.IsNullOrEmpty(query.Description))
+                    records = records.Where(f => EF.Functions.ILike(f.Description, $"%{query.Description}%"));
 
-                default:
-                    registros = query.SortDirection == "DESC"
-                        ? registros.OrderByDescending(f => f.Id)
-                        : registros.OrderBy(f => f.Id);
-                    break;
-            }
+                if (query.MinDailyRate.HasValue)
+                    records = records.Where(f => f.DailyRate >= query.MinDailyRate.Value);
 
-            var total = await registros.CountAsync();
+                if (query.MaxDailyRate.HasValue)
+                    records = records.Where(f => f.DailyRate <= query.MaxDailyRate.Value);
 
-            var items = query.ShouldPaginate()
-                ? await registros
+                if (query.MinPenaltyPercent.HasValue)
+                    records = records.Where(f => f.PenaltyPercent >= query.MinPenaltyPercent.Value);
+
+                if (query.MaxPenaltyPercent.HasValue)
+                    records = records.Where(f => f.PenaltyPercent <= query.MaxPenaltyPercent.Value);
+
+                records = query.OrderBy switch
+                {
+                    RentalPlanOrderBy.Days => query.SortDirection == "DESC"
+                        ? records.OrderByDescending(f => f.Days)
+                        : records.OrderBy(f => f.Days),
+
+                    RentalPlanOrderBy.DailyRate => query.SortDirection == "DESC"
+                        ? records.OrderByDescending(f => f.DailyRate)
+                        : records.OrderBy(f => f.DailyRate),
+
+                    RentalPlanOrderBy.PenaltyPercent => query.SortDirection == "DESC"
+                        ? records.OrderByDescending(f => f.PenaltyPercent)
+                        : records.OrderBy(f => f.PenaltyPercent),
+
+                    RentalPlanOrderBy.Description => query.SortDirection == "DESC"
+                        ? records.OrderByDescending(f => f.Description)
+                        : records.OrderBy(f => f.Description),
+
+                    RentalPlanOrderBy.CreatedAt => query.SortDirection == "DESC"
+                        ? records.OrderByDescending(f => f.CreatedAt)
+                        : records.OrderBy(f => f.CreatedAt),
+
+                    _ => query.SortDirection == "DESC"
+                        ? records.OrderByDescending(f => f.Id)
+                        : records.OrderBy(f => f.Id),
+                };
+
+                var list = await records.ToListAsync();
+                return list;
+            }, TimeSpan.FromHours(_defaults.DefaultTtl.TotalHours));
+
+            var total = items.Count;
+            var paged = query.ShouldPaginate()
+                ? items
                     .Skip(((int)query.PageIndex - 1) * (int)query.PageSize)
                     .Take((int)query.PageSize)
-                    .ToArrayAsync()
-                : await registros.ToArrayAsync();
+                    .ToArray()
+                : items.ToArray();
 
-            return new Tuple<RentalPlan[], double>(items, total);
+            return new Tuple<RentalPlan[], double>(paged, total);
         }
-
 
         public async Task<IEnumerable<RentalPlan>> GetAllAsync()
         {
-            return await _context.RentalPlans.AsNoTracking().ToListAsync();
+            return await _cache.GetByKeyAsync("RentalPlan:GetAll", async () =>
+            {
+                return await _context.RentalPlans.AsNoTracking().ToListAsync();
+            }, _defaults.DefaultTtl);
         }
 
         public async Task<RentalPlan?> GetByIdAsync(Guid id)
@@ -112,20 +121,43 @@ namespace Rental.Api.Infrastructure.Repository
             return await _context.RentalPlans.FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public void Add(RentalPlan plan)
+        public async void Add(RentalPlan rentalPlan)
         {
-            _context.RentalPlans.Add(plan);
+            _context.RentalPlans.Add(rentalPlan);
+
+            await CacheInvalidationHelper.InvalidateEntityAsync(_cache, nameof(RentalPlan));
         }
 
-        public void Update(RentalPlan plan)
+        public async void Update(RentalPlan rentalPlan)
         {
-            _context.RentalPlans.Update(plan);
+            _context.RentalPlans.Update(rentalPlan);
+
+            await CacheInvalidationHelper.InvalidateEntityAsync(_cache, nameof(RentalPlan));
         }
 
-        public void Delete(RentalPlan plan)
+        public async void Delete(RentalPlan rentalPlan)
         {
-            _context.RentalPlans.Remove(plan);
+            _context.RentalPlans.Remove(rentalPlan);
+
+            await CacheInvalidationHelper.InvalidateEntityAsync(_cache, nameof(RentalPlan));
         }
 
+        private static string BuildCacheKey(GetAllRentalPlanQuery query)
+        {
+            var sb = new StringBuilder("RentalPlan:GetAll");
+
+            if (query.StartDate.HasValue) sb.Append($":Start={query.StartDate:yyyyMMdd}");
+            if (query.EndDate.HasValue) sb.Append($":End={query.EndDate:yyyyMMdd}");
+            if (query.Days.HasValue) sb.Append($":Days={query.Days}");
+            if (!string.IsNullOrEmpty(query.Description)) sb.Append($":Desc={query.Description}");
+            if (query.MinDailyRate.HasValue) sb.Append($":RateMin={query.MinDailyRate}");
+            if (query.MaxDailyRate.HasValue) sb.Append($":RateMax={query.MaxDailyRate}");
+            if (query.MinPenaltyPercent.HasValue) sb.Append($":PenMin={query.MinPenaltyPercent}");
+            if (query.MaxPenaltyPercent.HasValue) sb.Append($":PenMax={query.MaxPenaltyPercent}");
+            sb.Append($":OrderBy={query.OrderBy}:Sort={query.SortDirection}");
+            sb.Append($":Page={query.PageIndex}:Size={query.PageSize}");
+
+            return sb.ToString();
+        }
     }
 }

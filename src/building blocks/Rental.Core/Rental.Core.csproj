@@ -24,6 +24,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DriverLicenseTypeMessages.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\HealthCheckMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>HealthCheckMessages.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\RentalPlanMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -42,6 +47,10 @@
     <EmbeddedResource Update="Resources\DriverLicenseTypeMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DriverLicenseTypeMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\HealthCheckMessages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>HealthCheckMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\RentalPlanMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -32,6 +32,7 @@ namespace Rental.Api
             builder.Services.AddMessageBusConfiguration(builder.Configuration);
             builder.Services.AddStorage(builder.Configuration);
             builder.Services.AddHealthCheckConfiguration(builder.Configuration);
+            builder.Services.AddRedisCache(builder.Configuration);
 
             var app = builder.Build();
 

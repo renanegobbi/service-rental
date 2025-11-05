@@ -41,7 +41,19 @@ services:
     volumes:
       - minio_data:/data
 
-  # Banco de dados do SonarQube
+  redis:
+    image: redis:7-alpine
+    container_name: redis-rental
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--requirepass", "admin123", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
   sonardb:
     image: postgres:15
     container_name: sonarqube-db
@@ -57,7 +69,6 @@ services:
       timeout: 5s
       retries: 10
 
-  # SonarQube (Community Edition)
   sonarqube:
     image: sonarqube:lts-community
     container_name: sonarqube

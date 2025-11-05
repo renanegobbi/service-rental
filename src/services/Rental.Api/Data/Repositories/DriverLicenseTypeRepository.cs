@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Rental.Api.Application.Queries.DriverLicenseTypeQueries.GetAll;
+using Rental.Api.Configuration;
+using Rental.Api.Data.Cache;
 using Rental.Api.Data.Repositories.Interfaces;
 using Rental.Api.Entities;
 using Rental.Core.Application.Queries.Enums;
@@ -13,76 +16,67 @@ namespace Rental.Api.Data.Repositories
     public class DriverLicenseTypeRepository : IDriverLicenseTypeRepository
     {
         private readonly RentalContext _context;
+        private readonly ICacheService<DriverLicenseType> _cache;
+        private readonly CacheDefaults _defaults;
+        private readonly ILogger<DriverLicenseTypeRepository> _logger;
 
-        public DriverLicenseTypeRepository(RentalContext context)
+        public DriverLicenseTypeRepository(RentalContext context,
+                                          ICacheService<DriverLicenseType> cache,
+                                          CacheDefaults defaults, 
+                                          ILogger<DriverLicenseTypeRepository> logger)
         {
             _context = context;
+            _cache = cache;
+            _defaults = defaults;
+            _logger = logger;
         }
 
         public IUnitOfWork UnitOfWork => _context;
 
         public async Task<Tuple<DriverLicenseType[], double>> GetAllAsync(GetAllDriverLicenseTypeQuery query)
         {
-            var registros = _context.DriverLicenseTypes.AsNoTracking().AsQueryable();
+            var cacheKey = BuildCacheKey(query);
 
-            if (query.StartDate.HasValue)
-                registros = registros.Where(x => x.CreatedAt >= query.StartDate.Value);
-
-            if (query.EndDate.HasValue)
-                registros = registros.Where(x => x.CreatedAt <= query.EndDate.Value);
-
-            if (!string.IsNullOrEmpty(query.Code))
-                registros = registros.Where(f => EF.Functions.ILike(f.Code, $"%{query.Code}%"));
-
-            if (!string.IsNullOrEmpty(query.Description))
-                registros = registros.Where(f => EF.Functions.ILike(f.Description, $"%{query.Description}%"));
-
-            if (query.IsActive.HasValue)
-                registros = registros.Where(f => f.IsActive == query.IsActive);
-
-            // Ordenação
-            switch (query.OrderBy)
+            var items = await _cache.GetByKeyAsync(cacheKey, async () =>
             {
-                case DriverLicenseTypeOrderBy.Code:
-                    registros = query.SortDirection == "DESC"
-                        ? registros.OrderByDescending(f => f.Code)
-                        : registros.OrderBy(f => f.Code);
-                    break;
+                var records = _context.DriverLicenseTypes.AsNoTracking().AsQueryable();
 
-                case DriverLicenseTypeOrderBy.Description:
-                    registros = query.SortDirection == "DESC"
-                        ? registros.OrderByDescending(f => f.Description)
-                        : registros.OrderBy(f => f.Description);
-                    break;
+                if (query.StartDate.HasValue)
+                    records = records.Where(x => x.CreatedAt >= query.StartDate.Value);
 
-                case DriverLicenseTypeOrderBy.IsActive:
-                    registros = query.SortDirection == "DESC"
-                        ? registros.OrderByDescending(f => f.IsActive)
-                        : registros.OrderBy(f => f.IsActive);
-                    break;
+                if (query.EndDate.HasValue)
+                    records = records.Where(x => x.CreatedAt <= query.EndDate.Value);
 
-                case DriverLicenseTypeOrderBy.CreatedAt:
-                    registros = query.SortDirection == "DESC"
-                        ? registros.OrderByDescending(f => f.CreatedAt)
-                        : registros.OrderBy(f => f.CreatedAt);
-                    break;
-                default:
-                    registros = query.SortDirection == "DESC"
-                        ? registros.OrderByDescending(f => f.Id)
-                        : registros.OrderBy(f => f.Id);
-                    break;
-            }
+                if (!string.IsNullOrEmpty(query.Code))
+                    records = records.Where(f => EF.Functions.ILike(f.Code, $"%{query.Code}%"));
 
-            var total = await registros.CountAsync();
+                if (!string.IsNullOrEmpty(query.Description))
+                    records = records.Where(f => EF.Functions.ILike(f.Description, $"%{query.Description}%"));
 
-            var items = query.ShouldPaginate()
-                ? await registros
-                    .Skip(((int)query.PageIndex - 1) * (int)query.PageSize)
-                    .Take((int)query.PageSize)
-                    .ToArrayAsync()
-                : await registros.ToArrayAsync();
+                if (query.IsActive.HasValue)
+                    records = records.Where(f => f.IsActive == query.IsActive);
 
-            return new Tuple<DriverLicenseType[], double>(items, total);
+                records = query.OrderBy switch
+                {
+                    DriverLicenseTypeOrderBy.Code => query.SortDirection == "DESC" ? records.OrderByDescending(f => f.Code) : records.OrderBy(f => f.Code),
+                    DriverLicenseTypeOrderBy.Description => query.SortDirection == "DESC" ? records.OrderByDescending(f => f.Description) : records.OrderBy(f => f.Description),
+                    DriverLicenseTypeOrderBy.IsActive => query.SortDirection == "DESC" ? records.OrderByDescending(f => f.IsActive) : records.OrderBy(f => f.IsActive),
+                    DriverLicenseTypeOrderBy.CreatedAt => query.SortDirection == "DESC" ? records.OrderByDescending(f => f.CreatedAt) : records.OrderBy(f => f.CreatedAt),
+                    _ => query.SortDirection == "DESC" ? records.OrderByDescending(f => f.Id) : records.OrderBy(f => f.Id)
+                };
+
+                var list = await records.ToListAsync();
+                return list;
+            }, TimeSpan.FromHours(_defaults.DefaultTtl.TotalHours));
+
+            var total = items.Count;
+            var paged = query.ShouldPaginate()
+                ? items.Skip(((int)query.PageIndex - 1) * (int)query.PageSize)
+                       .Take((int)query.PageSize)
+                       .ToArray()
+                : items.ToArray();
+
+            return new Tuple<DriverLicenseType[], double>(paged, total);
         }
 
         public async Task<DriverLicenseType?> GetByIdAsync(Guid id)
@@ -109,19 +103,39 @@ namespace Rental.Api.Data.Repositories
                 .FirstOrDefaultAsync(x => x.Code == code && !x.IsActive);
         }
 
-        public void Add(DriverLicenseType driverLicenseType)
+        public async void Add(DriverLicenseType driverLicenseType)
         {
             _context.DriverLicenseTypes.Add(driverLicenseType);
+
+            await CacheInvalidationHelper.InvalidateEntityAsync( _cache, nameof(DriverLicenseType));
         }
 
-        public void Update(DriverLicenseType driverLicenseType)
+        public async void Update(DriverLicenseType driverLicenseType)
         {
             _context.DriverLicenseTypes.Update(driverLicenseType);
+
+            await CacheInvalidationHelper.InvalidateEntityAsync(_cache, nameof(DriverLicenseType));
         }
 
-        public void Remove(DriverLicenseType driverLicenseType)
+        public async void Remove(DriverLicenseType driverLicenseType)
         {
             _context.DriverLicenseTypes.Remove(driverLicenseType);
+
+            await CacheInvalidationHelper.InvalidateEntityAsync(_cache, nameof(DriverLicenseType));
+        }
+
+        private static string BuildCacheKey(GetAllDriverLicenseTypeQuery query)
+        {
+            var key = $"DriverLicenseType:GetAll";
+
+            if (query.StartDate.HasValue) key += $":Start={query.StartDate:yyyyMMdd}";
+            if (query.EndDate.HasValue) key += $":End={query.EndDate:yyyyMMdd}";
+            if (!string.IsNullOrEmpty(query.Code)) key += $":Code={query.Code}";
+            if (!string.IsNullOrEmpty(query.Description)) key += $":Desc={query.Description}";
+            if (query.IsActive.HasValue) key += $":Active={query.IsActive}";
+            key += $":OrderBy={query.OrderBy}:Sort={query.SortDirection}:Page={query.PageIndex}:Size={query.PageSize}";
+
+            return key;
         }
 
     }
