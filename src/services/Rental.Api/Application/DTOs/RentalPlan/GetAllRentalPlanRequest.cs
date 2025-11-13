@@ -1,11 +1,12 @@
-﻿using Rental.Core.Application.Queries.Enums;
+﻿using Rental.Api.Swagger;
+using Rental.Core.Application.Queries.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Rental.Api.Application.DTOs.RentalPlan
 {
-    public class GetAllRentalPlanRequest
+    public class GetAllRentalPlanRequest : IExposeInSwagger
     {
         /// <summary>
         /// Number of days for the rental plan (e.g., 7, 15, 30).

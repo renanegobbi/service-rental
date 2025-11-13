@@ -1,6 +1,8 @@
-﻿namespace Rental.Api.Application.DTOs.RentalPlan
+﻿using Rental.Api.Swagger;
+
+namespace Rental.Api.Application.DTOs.RentalPlan
 {
-    public class AddRentalPlanRequest
+    public class AddRentalPlanRequest : IExposeInSwagger
     {
         /// <summary>
         /// Number of days in the plan (e.g., 7, 15, 30).

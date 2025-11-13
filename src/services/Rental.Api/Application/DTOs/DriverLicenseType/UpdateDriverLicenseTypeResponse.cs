@@ -1,9 +1,10 @@
-﻿using Rental.Core.Interfaces;
+﻿using Rental.Api.Swagger;
+using Rental.Core.Interfaces;
 using System;
 
 namespace Rental.Api.Application.DTOs.DriverLicenseType
 {
-    public class UpdateDriverLicenseTypeResponse: IResponse
+    public class UpdateDriverLicenseTypeResponse: IResponse, IExposeInSwagger
     {
         public Guid Id { get; set; }
         public string Code { get; set; }

@@ -1,9 +1,10 @@
-﻿using Rental.Core.Interfaces;
+﻿using Rental.Api.Swagger;
+using Rental.Core.Interfaces;
 using System;
 
 namespace Rental.Api.Application.DTOs.DriverLicenseType
 {
-    public class DeleteDriverLicenseTypeResponse : IResponse
+    public class DeleteDriverLicenseTypeResponse : IResponse, IExposeInSwagger
     {
         public Guid Id { get; set; }
         public string Code { get; set; }

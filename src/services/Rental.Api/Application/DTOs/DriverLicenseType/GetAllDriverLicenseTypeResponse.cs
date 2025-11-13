@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Rental.Api.Swagger;
+using System;
 
 namespace Rental.Api.Application.DTOs.DriverLicenseType
 {
-    public class GetAllDriverLicenseTypeResponse
+    public class GetAllDriverLicenseTypeResponse : IExposeInSwagger
     {
         public Guid Id { get; set; }
         public string Code { get; set; }

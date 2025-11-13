@@ -11,8 +11,10 @@ using Rental.Core.Pagination;
 using Rental.Core.Resources;
 using Rental.Core.Responses;
 using Rental.Services.Controllers;
+using Serilog;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -74,7 +76,8 @@ namespace Rental.Api.Controllers.V1
         [Route("v{version:apiVersion}/[controller]/add")]
         [SwaggerRequestExample(typeof(AddRentalPlanRequest), typeof(AddRentalPlanRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(AddRentalPlanResponseExamplo))]
-        [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.OK)]
+        //[ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(AddRentalPlanResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Add([FromBody] AddRentalPlanRequest request)
         {
             var response = await _mediatorHandler.SendCommand(new AddRentalPlanCommand(request));
@@ -91,7 +94,7 @@ namespace Rental.Api.Controllers.V1
         [Route("v{version:apiVersion}/[controller]/update")]
         [SwaggerRequestExample(typeof(UpdateRentalPlanRequest), typeof(UpdateRentalPlanRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(UpdateRentalPlanResponseExamplo))]
-        [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(UpdateRentalPlanResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Update([FromBody] UpdateRentalPlanRequest request)
         {
             var response = await _mediatorHandler.SendCommand(new UpdateRentalPlanCommand(request));
@@ -108,7 +111,7 @@ namespace Rental.Api.Controllers.V1
         [Route("v{version:apiVersion}/[controller]/delete")]
         [SwaggerRequestExample(typeof(DeleteRentalPlanRequest), typeof(DeleteRentalPlanRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(DeleteRentalPlanResponseExamplo))]
-        [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(DeleteRentalPlanResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Delete([FromBody] DeleteRentalPlanRequest request)
         {
             var response = await _mediatorHandler.SendCommand(new DeleteRentalPlanCommand(request));

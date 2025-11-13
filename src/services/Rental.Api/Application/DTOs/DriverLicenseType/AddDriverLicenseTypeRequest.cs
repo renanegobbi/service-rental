@@ -1,6 +1,8 @@
-﻿namespace Rental.Api.Application.DTOs.DriverLicenseType
+﻿using Rental.Api.Swagger;
+
+namespace Rental.Api.Application.DTOs.DriverLicenseType
 {
-    public class AddDriverLicenseTypeRequest
+    public class AddDriverLicenseTypeRequest : IExposeInSwagger
     {
         /// <summary>
         /// License code (A, B, AB...)

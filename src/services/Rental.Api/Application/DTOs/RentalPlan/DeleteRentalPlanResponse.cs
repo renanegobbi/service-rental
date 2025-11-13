@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Rental.Api.Swagger;
+using System;
 
 namespace Rental.Api.Application.DTOs.RentalPlan
 {
-    public class DeleteRentalPlanResponse
+    public class DeleteRentalPlanResponse : IExposeInSwagger
     {
         public Guid Id { get; set; }
         public int Days { get; set; }

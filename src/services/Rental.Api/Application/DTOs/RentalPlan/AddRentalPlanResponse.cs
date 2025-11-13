@@ -1,9 +1,10 @@
-﻿using Rental.Core.Interfaces;
+﻿using Rental.Api.Swagger;
+using Rental.Core.Interfaces;
 using System;
 
 namespace Rental.Api.Application.DTOs.RentalPlan
 {
-    public class AddRentalPlanResponse: IResponse
+    public class AddRentalPlanResponse: IResponse, IExposeInSwagger
     {
         public Guid Id { get; set; }
         public int Days { get; set; }

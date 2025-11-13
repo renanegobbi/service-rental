@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using Rental.Api.Filters;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -16,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using static Rental.Api.Filters.RemoveUnmarkedSchemasFilter;
 
 namespace Rental.Api.Configuration
 {
@@ -77,6 +79,9 @@ namespace Rental.Api.Configuration
                 c.IncludeXmlComments(xmlPath);
                 c.EnableAnnotations();
 
+                c.UseInlineDefinitionsForEnums();
+                c.SchemaFilter<SchemaTypeRegistryFilter>();
+                c.DocumentFilter<RemoveUnmarkedSchemasFilter>();
             });
         }
 

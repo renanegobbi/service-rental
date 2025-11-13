@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Rental.Api.Swagger;
+using System;
 
 namespace Rental.Api.Application.DTOs.RentalPlan
 {
-    public class UpdateRentalPlanRequest
+    public class UpdateRentalPlanRequest : IExposeInSwagger
     {
         /// <summary>
         /// Unique identifier of the rental plan to be updated.

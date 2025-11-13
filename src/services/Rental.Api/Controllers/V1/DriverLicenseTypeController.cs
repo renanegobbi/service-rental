@@ -73,7 +73,7 @@ namespace Rental.Api.Controllers.V1
         [Route("v{version:apiVersion}/[controller]/add")]
         [SwaggerRequestExample(typeof(AddDriverLicenseTypeRequest), typeof(AddDriverLicenseTypeRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(AddDriverLicenseTypeResponseExamplo))]
-        [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(AddDriverLicenseTypeResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Add([FromBody] AddDriverLicenseTypeRequest request)
         {
             var response = await _mediatorHandler.SendCommand(new AddDriverLicenseTypeCommand(request));
@@ -90,7 +90,7 @@ namespace Rental.Api.Controllers.V1
         [Route("v{version:apiVersion}/[controller]/update")]
         [SwaggerRequestExample(typeof(UpdateDriverLicenseTypeRequest), typeof(UpdateDriverLicenseTypeRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(UpdateDriverLicenseTypeResponseExamplo))]
-        [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(UpdateDriverLicenseTypeResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Update([FromBody] UpdateDriverLicenseTypeRequest request)
         {
             var response = await _mediatorHandler.SendCommand(new UpdateDriverLicenseTypeCommand(request));
@@ -107,7 +107,7 @@ namespace Rental.Api.Controllers.V1
         [Route("v{version:apiVersion}/[controller]/delete")]
         [SwaggerRequestExample(typeof(DeleteDriverLicenseTypeRequest), typeof(DeleteDriverLicenseTypeResponseExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(DeleteDriverLicenseTypeResponseExamplo))]
-        [ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(DeleteDriverLicenseTypeResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Delete([FromBody] DeleteDriverLicenseTypeRequest request)
         {
             var response = await _mediatorHandler.SendCommand(new DeleteDriverLicenseTypeCommand(request));

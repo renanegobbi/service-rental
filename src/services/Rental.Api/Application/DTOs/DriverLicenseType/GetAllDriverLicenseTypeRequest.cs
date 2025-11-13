@@ -1,11 +1,12 @@
-﻿using Rental.Core.Application.Queries.Enums;
+﻿using Rental.Api.Swagger;
+using Rental.Core.Application.Queries.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Rental.Api.Application.DTOs.DriverLicenseType
 {
-    public class GetAllDriverLicenseTypeRequest
+    public class GetAllDriverLicenseTypeRequest : IExposeInSwagger
     {
         /// <summary>
         /// License code (A, B, AB...)
