@@ -25,6 +25,8 @@ namespace Rental.Api
                 builder.Configuration.AddUserSecrets<Program>();
             }
 
+            builder.Host.AddSerilogConfiguration(builder.Configuration, builder.Environment);
+
             builder.Services.AddApiConfiguration(builder.Configuration);
             builder.Services.AddSwaggerConfiguration(builder.Environment, builder.Configuration);
             builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(typeof(Program).Assembly); });

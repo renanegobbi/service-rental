@@ -9,9 +9,9 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Add
         public int Days { get; private set; }
         public decimal DailyRate { get; private set; }
         public decimal PenaltyPercent { get; private set; }
-        public string? Description { get; private set; }
+        public string Description { get; private set; }
 
-        public AddRentalPlanCommand(int days, decimal dailyRate, decimal penaltyPercent, string? description)
+        public AddRentalPlanCommand(int days, decimal dailyRate, decimal penaltyPercent, string description)
         {
             Days = days;
             DailyRate = dailyRate;
