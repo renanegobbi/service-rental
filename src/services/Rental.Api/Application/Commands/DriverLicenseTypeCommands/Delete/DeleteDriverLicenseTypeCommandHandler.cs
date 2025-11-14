@@ -32,7 +32,7 @@ namespace Rental.Api.Application.Commands.DriverLicenseTypeCommands.Delete
 
             driverLicenseType.RemoveDriverLicenseType();
             _repository.Update(driverLicenseType);
-            var success = await _repository.UnitOfWork.Commit();
+            var success = await _repository.UnitOfWork.CommitTransaction();
 
             if (!success)
                 return Response.Fail(CommonMessages.Error_Persisting_Data);

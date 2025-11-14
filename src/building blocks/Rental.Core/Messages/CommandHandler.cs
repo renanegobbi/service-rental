@@ -21,7 +21,7 @@ namespace Rental.Core.Messages
 
         protected async Task<ValidationResult> PersistData(IUnitOfWork uow)
         {
-            if (!await uow.Commit()) AddError("An error occurred while persisting the data");
+            if (!await uow.CommitTransaction()) AddError("An error occurred while persisting the data");
 
             return ValidationResult;
         }

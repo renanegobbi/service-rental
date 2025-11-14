@@ -5,6 +5,8 @@ using Rental.Core.Interfaces;
 using Rental.Core.Messages;
 using Rental.Core.Resources;
 using Rental.Core.Responses;
+using Serilog;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,6 +25,9 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Update
 
         public async Task<IResponse> Handle(UpdateRentalPlanCommand command, CancellationToken cancellationToken)
         {
+            Log.Information("Starting UpdateRentalPlanCommand: Id={Id}, DailyRate={DailyRate}, PenaltyPercent={PenaltyPercent}, Description={Description}",
+                command.Id, command.DailyRate, command.PenaltyPercent, command.Description);
+
             if (!command.IsValid())
                 return Response.Fail(command.ValidationResult);
 
@@ -35,14 +40,28 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Update
             if (!ValidationResult.IsValid)
                 return Response.Fail(ValidationResult);
 
-            rentalPlan.Update(command.DailyRate, command.PenaltyPercent, command.Description);
-            _rentalPlanRepository.Update(rentalPlan);
-            var success = await _rentalPlanRepository.UnitOfWork.Commit();
+            _rentalPlanRepository.UnitOfWork.BeginTransaction();
 
-            if (!success)
-                return Response.Fail(CommonMessages.Error_Persisting_Data);
+            try
+            {
+                rentalPlan.Update(command.DailyRate, command.PenaltyPercent, command.Description);
+                _rentalPlanRepository.Update(rentalPlan);
+                var success = await _rentalPlanRepository.UnitOfWork.CommitTransaction();
 
-            return Response.Ok(RentalPlanMessages.RentalPlan_Updated_Successfully, rentalPlan.ToUpdateRentalPlanResponse());
+                if (!success)
+                    return Response.Fail(CommonMessages.Error_Persisting_Data);
+
+                Log.Information("RentalPlan updated: Id={Id}, Days={Days}, DailyRate={DailyRate}, PenaltyPercent={PenaltyPercent}, Description={Description}",
+                    rentalPlan.Id, rentalPlan.Days, rentalPlan.DailyRate, rentalPlan.PenaltyPercent, rentalPlan.Description);
+
+                return Response.Ok(RentalPlanMessages.RentalPlan_Updated_Successfully, rentalPlan.ToUpdateRentalPlanResponse());
+            }
+            catch (Exception ex)
+            {
+                _rentalPlanRepository.UnitOfWork.RollbackTransaction();
+                Log.Error(ex, "Error while executing {Command}", nameof(UpdateRentalPlanCommand));
+                throw;
+            }
         }
 
         private async Task ValidateBusinessRulesAsync(UpdateRentalPlanCommand command)

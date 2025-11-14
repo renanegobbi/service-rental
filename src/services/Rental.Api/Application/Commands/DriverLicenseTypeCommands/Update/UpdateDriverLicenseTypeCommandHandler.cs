@@ -37,7 +37,7 @@ namespace Rental.Api.Application.Commands.DriverLicenseTypeCommands.Update
 
             driverLicenseType.Update(command.Code.Trim().ToUpper(), command.Description);
             _driverlicenseTypeRepository.Update(driverLicenseType);
-            var success = await _driverlicenseTypeRepository.UnitOfWork.Commit();
+            var success = await _driverlicenseTypeRepository.UnitOfWork.CommitTransaction();
 
             if (!success)
                 return Response.Fail(CommonMessages.Error_Persisting_Data);

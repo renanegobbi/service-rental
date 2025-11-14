@@ -31,7 +31,7 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Delete
                 return Response.Fail(RentalPlanMessages.RentalPlan_ID_Not_Found);
 
             _rentalPlanRepository.Delete(rentalPlan);            
-            var success = await _rentalPlanRepository.UnitOfWork.Commit();
+            var success = await _rentalPlanRepository.UnitOfWork.CommitTransaction();
 
             if (!success)
                 return Response.Fail(CommonMessages.Error_Persisting_Data);

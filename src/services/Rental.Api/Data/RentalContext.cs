@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Rental.Api.Entities;
 using Rental.Core.Data;
 using Rental.Core.DomainObjects;
@@ -12,6 +13,7 @@ namespace Rental.Api.Data
 {
     public class RentalContext : DbContext, IUnitOfWork
     {
+        private IDbContextTransaction _transaction;
         private readonly IMediatorHandler _mediatorHandler;
 
         public RentalContext(DbContextOptions<RentalContext> options, IMediatorHandler mediatorHandler)
@@ -42,12 +44,23 @@ namespace Rental.Api.Data
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(RentalContext).Assembly);
         }
 
-        public async Task<bool> Commit()
+        public void BeginTransaction()
+        {
+            _transaction = base.Database.BeginTransaction();
+        }
+
+        public async Task<bool> CommitTransaction()
         {
             var success = await base.SaveChangesAsync() > 0;
 
             return success;
         }
+
+        public void RollbackTransaction()
+        {
+            _transaction.Rollback();
+        }
+
     }
 
     public static class MediatorExtension

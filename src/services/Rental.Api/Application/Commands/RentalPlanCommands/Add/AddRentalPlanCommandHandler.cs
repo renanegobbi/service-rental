@@ -34,7 +34,7 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Add
             var rentalPlan = command.ToRentalPlan();
 
             _rentalPlanRepository.Add(rentalPlan);
-            var success = await _rentalPlanRepository.UnitOfWork.Commit();
+            var success = await _rentalPlanRepository.UnitOfWork.CommitTransaction();
 
             if (!success)
                 return Response.Fail(CommonMessages.Error_Persisting_Data);
