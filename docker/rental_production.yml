@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   postgres:
     image: postgres:15
@@ -87,6 +88,32 @@ services:
       - sonarqube_logs:/opt/sonarqube/logs
       - sonarqube_extensions:/opt/sonarqube/extensions
     restart: unless-stopped
+
+  loki:
+    image: grafana/loki:2.9.4
+    container_name: loki
+    user: "0"
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml -target=all
+    volumes:
+      - ./loki/local-config.yaml:/etc/loki/local-config.yaml
+      - loki_data:/loki
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:10.4.2
+    container_name: grafana
+    depends_on:
+      - loki
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
      
 volumes:
   postgres_data:
@@ -95,3 +122,5 @@ volumes:
   sonarqube_data:
   sonarqube_logs:
   sonarqube_extensions:
+  grafana_data:
+  loki_data:

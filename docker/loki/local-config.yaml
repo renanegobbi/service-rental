@@ -1,0 +1,53 @@
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+
+ingester:
+  wal:
+    enabled: true
+    dir: /loki/wal
+  lifecycler:
+    address: 127.0.0.1
+    ring:
+      kvstore:
+        store: memberlist  
+      replication_factor: 1
+    final_sleep: 0s
+  chunk_idle_period: 10s       
+  chunk_block_size: 262144
+  chunk_encoding: snappy
+  max_transfer_retries: 0
+  max_chunk_age: 1m
+
+memberlist:
+  join_members:
+    - loki  
+
+schema_config:
+  configs:
+    - from: 2020-10-24
+      store: boltdb-shipper
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
+
+storage_config:
+  boltdb_shipper:
+    active_index_directory: /loki/index
+    cache_location: /loki/cache
+    shared_store: filesystem
+  filesystem:
+    directory: /loki/chunks
+
+limits_config:
+  retention_period: 720h   
+  reject_old_samples: false
+  reject_old_samples_max_age: 0s
+
+compactor:
+  working_directory: /loki/compactor
+  shared_store: filesystem
+  compaction_interval: 1h 
