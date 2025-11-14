@@ -29,6 +29,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>HealthCheckMessages.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\AuthMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AuthMessages.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\RentalPlanMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -51,6 +56,10 @@
     <EmbeddedResource Update="Resources\HealthCheckMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>HealthCheckMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\AuthMessages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AuthMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\RentalPlanMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -7,6 +7,123 @@ CREATE SCHEMA IF NOT EXISTS rental_service AUTHORIZATION postgres;
 
 
 -- ==========================================================
+-- REFRESH_TOKENS TABLE
+-- ==========================================================
+CREATE TABLE IF NOT EXISTS rental_service."refresh_tokens" (
+    "id" UUID PRIMARY KEY,
+    "username" text,
+    "token" UUID NOT NULL,
+    "expiration_date" timestamptz NOT NULL
+);
+
+
+-- ==========================================================
+-- ROLES TABLE
+-- ==========================================================
+CREATE TABLE IF NOT EXISTS rental_service."roles" (
+    "id" UUID PRIMARY KEY,
+    "name" varchar(256),
+    "normalized_name" varchar(256) UNIQUE,
+    "concurrency_stamp" text
+);
+
+
+-- ==========================================================
+-- USERS TABLE
+-- ==========================================================
+CREATE TABLE IF NOT EXISTS rental_service."users" (
+    "id" UUID PRIMARY KEY,
+    "user_name" varchar(256),
+    "normalized_username" varchar(256) UNIQUE,
+    "email" varchar(256),
+    "normalized_email" varchar(256),
+    "email_confirmed" boolean NOT NULL,
+    "password_hash" text,
+    "security_stamp" text,
+    "concurrency_stamp" text,
+    "phone_number" text,
+    "phone_number_confirmed" boolean NOT NULL,
+    "two_factor_enabled" boolean NOT NULL,
+    "lockout_end" timestamptz,
+    "lockout_enabled" boolean NOT NULL,
+    "access_failed_count" int NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS "ix_users_email" ON rental_service."users"("normalized_email");
+CREATE INDEX IF NOT EXISTS "ix_user_name" ON rental_service."users"("normalized_username");
+
+
+-- ==========================================================
+-- ROLE_CLAIMS TABLE
+-- ==========================================================
+CREATE TABLE IF NOT EXISTS rental_service."role_claims" (
+    "id" SERIAL PRIMARY KEY,
+    "role_id" UUID NOT NULL,
+    "claim_type" text,
+    "claim_value" text,
+    CONSTRAINT "fk_role_claims_roles_role_id" FOREIGN KEY ("role_id") REFERENCES rental_service."roles"("id") ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS "ix_role_claims_role_id" ON rental_service."role_claims"("role_id");
+
+
+-- ==========================================================
+-- USER_CLAIMS TABLE
+-- ==========================================================
+CREATE TABLE IF NOT EXISTS rental_service."user_claims" (
+    "id" SERIAL PRIMARY KEY,
+    "user_id" UUID NOT NULL,
+    "claim_type" text,
+    "claim_value" text,
+    CONSTRAINT "fk_user_claims_users_user_id" FOREIGN KEY ("user_id") REFERENCES rental_service."users"("id") ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS "ix_user_claims_user_id" ON rental_service."user_claims"("user_id");
+
+
+-- ==========================================================
+-- USER_LOGINS TABLE
+-- ==========================================================
+CREATE TABLE IF NOT EXISTS rental_service."user_logins" (
+    "login_provider" varchar(128) NOT NULL,
+    "provider_key" varchar(128) NOT NULL,
+    "provider_display_name" text,
+    "user_id" UUID NOT NULL,
+    PRIMARY KEY ("login_provider", "provider_key"),
+    CONSTRAINT "fk_user_logins_users_user_id" FOREIGN KEY ("user_id") REFERENCES rental_service."users"("id") ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS "ix_user_logins_user_id" ON rental_service."user_logins"("user_id");
+
+
+-- ==========================================================
+-- USER_ROLES TABLE
+-- ==========================================================
+CREATE TABLE IF NOT EXISTS rental_service."user_roles" (
+    "user_id" UUID NOT NULL,
+    "role_id" UUID NOT NULL,
+    PRIMARY KEY ("user_id", "role_id"),
+    CONSTRAINT "fk_user_roles_users_user_id" FOREIGN KEY ("user_id") REFERENCES rental_service."users"("id") ON DELETE CASCADE,
+    CONSTRAINT "fk_user_roles_roles_role_id" FOREIGN KEY ("role_id") REFERENCES rental_service."roles"("id") ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS "ix_user_roles_role_id" ON rental_service."user_roles"("role_id");
+
+
+-- ==========================================================
+-- USER_TOKENS TABLE
+-- ==========================================================
+CREATE TABLE IF NOT EXISTS rental_service."user_tokens" (
+    "user_id" UUID NOT NULL,
+    "login_provider" varchar(128) NOT NULL,
+    "name" varchar(128) NOT NULL,
+    "value" text,
+    PRIMARY KEY ("user_id", "login_provider", "name"),
+    CONSTRAINT "fk_user_tokens_users_user_id" FOREIGN KEY ("user_id") REFERENCES rental_service."users"("id") ON DELETE CASCADE
+);
+
+
+-- ==========================================================
 -- DRIVER_LICENSE_TYPE TABLE
 -- ==========================================================
 CREATE TABLE IF NOT EXISTS rental_service."driver_license_type" (
@@ -112,10 +229,18 @@ CREATE TABLE rental_service."notification" (
 );
 
 
+-- ==========================================================
+-- INSERTS
+-- ==========================================================
 
--- Insert driver license type
 INSERT INTO rental_service."driver_license_type" (id, code, description)
 VALUES 
     (gen_random_uuid(), 'A',  'Motorcycle'),
     (gen_random_uuid(), 'B',  'Car'),
     (gen_random_uuid(), 'AB', 'Motorcycle and Car');
+
+
+
+
+
+

@@ -76,7 +76,6 @@ namespace Rental.Api.Controllers.V1
         [Route("v{version:apiVersion}/[controller]/add")]
         [SwaggerRequestExample(typeof(AddRentalPlanRequest), typeof(AddRentalPlanRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(AddRentalPlanResponseExamplo))]
-        //[ProducesResponseType(typeof(ApiResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(AddRentalPlanResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Add([FromBody] AddRentalPlanRequest request)
         {
