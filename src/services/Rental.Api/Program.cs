@@ -29,6 +29,7 @@ namespace Rental.Api
 
             builder.Services.AddApiConfiguration(builder.Configuration);
             builder.Services.AddIdentityConfiguration(builder.Configuration);
+            builder.Services.AddJwtConfiguration(builder.Configuration);
             builder.Services.AddSwaggerConfiguration(builder.Environment, builder.Configuration);
             builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(typeof(Program).Assembly); });
             builder.Services.RegisterServices();

@@ -9,6 +9,7 @@ using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 using static Rental.Api.Configuration.SwaggerConfig;
+using _AuthenticationService = Rental.Api.Application.Services.Auth.AuthenticationService;
 
 namespace Rental.Api.Configuration
 {
@@ -19,8 +20,6 @@ namespace Rental.Api.Configuration
             services.AddSwaggerExamplesFromAssemblyOf<Program>();
 
             services.AddScoped<IMediatorHandler, MediatorHandler>();
-            //services.AddScoped<IRequestHandler<RegisterMotorcycleCommand, ValidationResult>, MotorcycleCommandHandler>();
-            //services.AddScoped<IRequestHandler<RegisterCourierCommand, ValidationResult>, CourierCommandHandler>();
 
             services.AddMediatR(cfg =>
                 cfg.RegisterServicesFromAssemblies(
@@ -28,10 +27,13 @@ namespace Rental.Api.Configuration
                 )
             );
 
+            services.AddScoped<_AuthenticationService>();
+
             services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
             services.AddScoped<IRentalPlanRepository, RentalPlanRepository>();
             services.AddScoped<ICourierRepository, CourierRepository>();
             services.AddScoped<IDriverLicenseTypeRepository, DriverLicenseTypeRepository>();
+
             services.AddScoped<RentalContext>();
 
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();

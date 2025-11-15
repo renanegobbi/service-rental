@@ -13,6 +13,8 @@ namespace Rental.Api.Data
         {
         }
 
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -25,6 +27,7 @@ namespace Rental.Api.Data
             builder.ApplyConfiguration(new UserClaimMapping());
             builder.ApplyConfiguration(new RoleClaimMapping());
             builder.ApplyConfiguration(new UserLoginMapping());
+            builder.ApplyConfiguration(new RefreshTokenMapping());
         }
     }
 }

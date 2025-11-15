@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Rental.Api.Data;
 using Rental.Api.Entities.Identity;
+using Rental.Api.Extensions;
 
 namespace Rental.Api.Configuration
 {
@@ -12,6 +13,9 @@ namespace Rental.Api.Configuration
         public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services,
             IConfiguration configuration)
         {
+            var appSettingsSectionRefreshToken = configuration.GetSection("AppTokenSettings");
+                services.Configure<AppTokenSettings>(appSettingsSectionRefreshToken);
+
             services.AddDbContext<IdentityContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 

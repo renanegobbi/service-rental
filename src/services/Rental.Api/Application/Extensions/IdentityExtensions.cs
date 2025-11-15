@@ -15,15 +15,5 @@ namespace Rental.Api.Application.Extensions
             };
         }
 
-        public static UserLoginResponse ToUserLoginResponse(this ApplicationUser user)
-        {
-            if (user == null) return null;
-
-            return new UserLoginResponse
-            {
-                Email = user.Email
-            };
-        }
-
     }
 }

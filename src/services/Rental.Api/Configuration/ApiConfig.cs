@@ -62,6 +62,8 @@ namespace Rental.Api.Configuration
 
             app.UseRouting();
 
+            app.UseAuthConfiguration();
+
             app.UseCors("Total");
 
             app.UseEndpoints(endpoints =>

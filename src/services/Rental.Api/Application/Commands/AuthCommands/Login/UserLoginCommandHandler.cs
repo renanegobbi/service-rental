@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Rental.Api.Application.Extensions;
+using Rental.Api.Application.Services.Auth;
 using Rental.Api.Entities.Identity;
 using Rental.Core.Interfaces;
 using Rental.Core.Messages;
@@ -16,11 +16,14 @@ namespace Rental.Api.Application.Commands.AuthCommands.Login
     {
         private readonly UserManager<ApplicationUser> _userManager;
         public readonly SignInManager<ApplicationUser> _signInManager;
+        public readonly AuthenticationService _authService;
         public UserLoginCommandHandler(UserManager<ApplicationUser> userManager, 
-                                       SignInManager<ApplicationUser> signInManager)
+                                       SignInManager<ApplicationUser> signInManager,
+                                       AuthenticationService authService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _authService = authService;
         }
 
         public async Task<IResponse> Handle(UserLoginCommand command, CancellationToken cancellationToken)
@@ -43,8 +46,10 @@ namespace Rental.Api.Application.Commands.AuthCommands.Login
             var result = await _signInManager.PasswordSignInAsync(
                 user, command.Password, false, lockoutOnFailure: true);
 
-            if (result.Succeeded) { 
-                return Response.Ok(AuthMessages.User_Login_Success, user.ToUserLoginResponse());
+            if (result.Succeeded) 
+            {
+                var userLongReposnse = await _authService.GenerateJwt(user.Email);
+                return Response.Ok(AuthMessages.User_Login_Success, userLongReposnse);
             }
 
             if (result.IsLockedOut)
