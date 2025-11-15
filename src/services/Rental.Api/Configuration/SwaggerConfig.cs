@@ -50,28 +50,30 @@ namespace Rental.Api.Configuration
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = "Enter the JWT token like this: Bearer {your token}",
+                    Description = "Insert only the JWT token below.",
                     Name = "Authorization",
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT"
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
                             {
-                                new OpenApiSecurityScheme
-                                {
-                                    Reference = new OpenApiReference
-                                    {
-                                        Type = ReferenceType.SecurityScheme,
-                                        Id = "Bearer"
-                                    }
-                                },
-                                new string[] {}
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
                             }
+                        },
+                        new string[] {}
+                    }
                 });
+
+
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -175,20 +177,20 @@ namespace Rental.Api.Configuration
             static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description,
                IWebHostEnvironment webHostEnvironment, IConfiguration config)
             {
-                var nomeBancoDados = string.Empty;
+                var databaseName = string.Empty;
 
                 var environmentName = webHostEnvironment.EnvironmentName;
 
                 switch (environmentName)
                 {
                     case EnvironmentNames.Development:
-                        nomeBancoDados = EnvironmentNames.DbDevelopmentName;
+                        databaseName = EnvironmentNames.DbDevelopmentName;
                         break;
                     case EnvironmentNames.Staging:
-                        nomeBancoDados = EnvironmentNames.DbStagingName;
+                        databaseName = EnvironmentNames.DbStagingName;
                         break;
                     case EnvironmentNames.Production:
-                        nomeBancoDados = EnvironmentNames.DbProductionName;
+                        databaseName = EnvironmentNames.DbProductionName;
                         break;
                 }
 
@@ -198,8 +200,7 @@ namespace Rental.Api.Configuration
                 var customDescription = "This API manages motorcycle rental operations, including registration, availability, booking, and customer interactions. It is designed for mobility platforms and rental services.<br>" +
                                     "<ul>" +
                                         $"<li>Current environment: <b>{environmentName.ToUpper()}</b></li>" +
-                                        $"<li>Database (PostgreSQL): <b>{nomeBancoDados}</b></li>" +
-                                        "<li>Base URL: <b>{BASE_URL}</b></li>" +
+                                        $"<li>Database (PostgreSQL): <b>{databaseName}</b></li>" +
                                         $"<li>Use the 'Authorize' button above to authenticate using a JWT token.</li>" +
                                     "</ul>";
 

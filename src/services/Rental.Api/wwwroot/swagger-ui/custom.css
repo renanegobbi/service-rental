@@ -333,65 +333,11 @@
     display: none;
 }
 
-.scheme-container {
-    display: none;
-}
 
-
-
-
-
-
-
-
-/* === Corrige alinhamento das setas (model-toggle) === 
 .swagger-ui .model-box-control {
     display: flex;
     align-items: center;
-    gap: 8px;  espaçamento entre seta e nome 
-    width: 100%;
-    text-align: left;
-}*/
-
-/* Mantém a seta visível e bem posicionada 
-.swagger-ui .model-toggle {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    margin-right: 4px;
-    transition: transform 0.2s ease;
-}
-*/
-    /* Quando expandido, gira a seta para baixo */
-    /*.swagger-ui .model-toggle:not(.collapsed) {
-        transform: rotate(90deg);
-    }*/
-
-/* Ajusta o título para não quebrar */
-/*.swagger-ui .model-title {
-    display: inline;
-    vertical-align: middle;
-}*/
-
-/*.swagger-ui .model-toggle::after {
-    content: "▶";
-    display: inline-block;
-    font-size: 12px;
-    color: #333;
-}
-
-.swagger-ui .model-toggle:not(.collapsed)::after {
-    content: "▼";
-}
-*/
-
-
-
- /*--- CORREÇÃO DO ALINHAMENTO DAS SETAS DOS SCHEMAS ---*/ 
-.swagger-ui .model-box-control {
-    display: flex;
-    align-items: center;
-    gap: 8px;  distância entre a seta e o nome 
+    gap: 8px;  
     width: 100%;
 }
 
@@ -403,112 +349,11 @@
     transition: transform 0.2s ease;
 }
 
- /*Quando expandido*/ 
 .swagger-ui .model-toggle:not(.collapsed)::after {
     transform: rotate(90deg);
 }
 
- /*Garante que o nome do schema fique na mesma linha*/ 
 .swagger-ui .model-title {
     display: inline;
     vertical-align: middle;
 }
-
-
-
-
-
-
-/* --- CORREÇÃO FINAL: Alinhamento e rotação corretos sem setas duplicadas --- */
-/*.swagger-ui .model-box-control {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    width: 100%;
-}*/
-
-/* Remove qualquer conteúdo customizado */
-/*.swagger-ui .model-toggle::after {
-    content: none !important;
-}*/
-
-/* Usa a seta padrão e mantém o comportamento de rotação */
-/*.swagger-ui .model-toggle {
-    transform: rotate(0deg);
-    transition: transform 0.25s ease;
-}
-
-    .swagger-ui .model-toggle:not(.collapsed) {
-        transform: rotate(-90deg);*/ /* ou 90deg dependendo do estilo desejado */
-    /*}*/
-
-/* Garante que o nome do schema fique na mesma linha */
-/*.swagger-ui .model-title {
-    display: inline;
-    vertical-align: middle;
-}*/
-
-
-
-
-/* === REATIVA AS SETAS ORIGINAIS DO SWAGGER === */
-/*.swagger-ui .model-toggle::before {
-    content: "▸" !important;*/ /* seta padrão fechada */
-    /*display: inline-block;
-    font-size: 13px;
-    color: #333;
-    margin-right: 6px;
-    transform: rotate(0deg);
-    transition: transform 0.25s ease;
-}*/
-
-/* Quando expandido */
-/*.swagger-ui .model-toggle:not(.collapsed)::before {
-    content: "▾" !important;*/ /* seta padrão aberta */
-/*}*/
-
-/* Garante alinhamento com o texto do schema */
-/*.swagger-ui .model-box-control {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}*/
-
-
-
-
-/* === CORREÇÃO FINAL DAS SETAS DO SWAGGER (SEM DUPLICAÇÃO) === */
-/*.swagger-ui .model-toggle {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    position: relative;
-    margin-right: 6px;
-}*/
-
-    /* Remove qualquer seta extra anterior */
-    /*.swagger-ui .model-toggle::after {
-        content: none !important;
-    }*/
-
-    /* Usa apenas a seta padrão via ::before */
-    /*.swagger-ui .model-toggle::before {
-        content: "▸";*/ /* seta fechada padrão */
-        /*font-size: 12px;
-        color: #333;
-        display: inline-block;
-        transition: transform 0.25s ease;
-        transform-origin: center;
-    }*/
-
-    /* Quando expandido (sem a classe collapsed) */
-    /*.swagger-ui .model-toggle:not(.collapsed)::before {
-        content: "▾";*/ /* seta aberta */
-    /*}*/
-
-/* Garante alinhamento e espaçamento uniforme */
-/*.swagger-ui .model-box-control {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}*/

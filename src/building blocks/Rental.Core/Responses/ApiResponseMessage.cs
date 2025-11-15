@@ -52,6 +52,16 @@
             }, null)
         {
         }
+
+        public ForbiddenResponse(string message)
+            : base(false, new[]
+            {
+                string.IsNullOrEmpty(message)
+                    ? "Access denied. You do not have permission for this operation."
+                    : $"Access denied: {message}"
+            }, null)
+        {
+        }
     }
 
     /// <summary>

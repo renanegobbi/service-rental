@@ -5,21 +5,21 @@ using Rental.Api.Application.Commands.RentalPlanCommands.Delete;
 using Rental.Api.Application.Commands.RentalPlanCommands.Update;
 using Rental.Api.Application.DTOs.RentalPlan;
 using Rental.Api.Application.Queries.RentalPlanQueries.GetAll;
+using Rental.Api.Extensions;
 using Rental.Api.Swagger.Examples;
 using Rental.Core.Mediator;
 using Rental.Core.Pagination;
 using Rental.Core.Resources;
 using Rental.Core.Responses;
 using Rental.Services.Controllers;
-using Serilog;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
-using System;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace Rental.Api.Controllers.V1
 {
+    [Authorize]
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(InternalServerErrorResponse), (int)HttpStatusCode.InternalServerError)]
@@ -49,7 +49,7 @@ namespace Rental.Api.Controllers.V1
         /// </ul>
         /// </remarks>
         [HttpPost]
-        [AllowAnonymous]
+        [ClaimsAuthorize("RentalPlan","Read")]
         [Route("v{version:apiVersion}/[controller]/search")]
         [SwaggerRequestExample(typeof(GetAllRentalPlanRequest), typeof(GetAllRentalPlanRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(GetAllRentalPlanResponseExample))]

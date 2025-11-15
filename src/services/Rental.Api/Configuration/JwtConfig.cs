@@ -25,15 +25,14 @@ namespace Rental.Api.Configuration
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.RequireHttpsMetadata = true;
+                options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = true,
-                    ValidateAudience = true,
-                    //ValidAudience = appSettings.ValidIn,
+                    ValidateAudience = false,
                     ValidIssuer = appSettings.Issuer
                 };
             });
