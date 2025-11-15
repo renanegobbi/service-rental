@@ -28,4 +28,25 @@ namespace Rental.Api.Swagger.Examples
             }
         );
     }
+
+    public class UserLoginRequestExamplo : IExamplesProvider<UserLoginRequest>
+    {
+        public UserLoginRequest GetExamples() => new UserLoginRequest
+        {
+            Email = "user@email.com",
+            Password = "Senha@123"
+        };
+    }
+
+    public class UserLoginResponseExamplo : IExamplesProvider<ApiResponse>
+    {
+        public ApiResponse GetExamples() => new ApiResponse(
+            success: true,
+            messages: new[] { AuthMessages.User_Created_Successfully },
+            data: new UserLoginResponse()
+            {
+                Email = "user@email.com"
+            }
+        );
+    }
 }

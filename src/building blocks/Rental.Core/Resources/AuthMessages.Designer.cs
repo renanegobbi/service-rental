@@ -88,7 +88,7 @@ namespace Rental.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User_Login_Success.
+        ///   Looks up a localized string similar to User successfully logged in..
         /// </summary>
         public static string User_Login_Success {
             get {

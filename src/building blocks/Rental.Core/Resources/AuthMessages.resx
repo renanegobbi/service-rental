@@ -127,7 +127,7 @@
     <value>User cannot log in without a confirmed email.</value>
   </data>
   <data name="User_Login_Success" xml:space="preserve">
-    <value>User_Login_Success</value>
+    <value>User successfully logged in.</value>
   </data>
   <data name="User_Or_Password_Incorrect" xml:space="preserve">
     <value>Incorrect username or password.</value>
