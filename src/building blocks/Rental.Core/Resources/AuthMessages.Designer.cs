@@ -61,6 +61,33 @@ namespace Rental.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh token has expired..
+        /// </summary>
+        public static string Refresh_Token_Expired {
+            get {
+                return ResourceManager.GetString("Refresh_Token_Expired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh token generated successfully..
+        /// </summary>
+        public static string Refresh_Token_Generated_Successfully {
+            get {
+                return ResourceManager.GetString("Refresh_Token_Generated_Successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid refresh token..
+        /// </summary>
+        public static string Refresh_Token_Invalid {
+            get {
+                return ResourceManager.GetString("Refresh_Token_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User is blocked due to invalid login attempts..
         /// </summary>
         public static string User_Blocked_Invalid_Attempts {

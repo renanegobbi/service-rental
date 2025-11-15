@@ -16,14 +16,14 @@ namespace Rental.Api.Application.Commands.AuthCommands.Login
     {
         private readonly UserManager<ApplicationUser> _userManager;
         public readonly SignInManager<ApplicationUser> _signInManager;
-        public readonly AuthenticationService _authService;
+        public readonly AuthenticationService _authenticationService;
         public UserLoginCommandHandler(UserManager<ApplicationUser> userManager, 
                                        SignInManager<ApplicationUser> signInManager,
-                                       AuthenticationService authService)
+                                       AuthenticationService authenticationService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _authService = authService;
+            _authenticationService = authenticationService;
         }
 
         public async Task<IResponse> Handle(UserLoginCommand command, CancellationToken cancellationToken)
@@ -48,7 +48,7 @@ namespace Rental.Api.Application.Commands.AuthCommands.Login
 
             if (result.Succeeded) 
             {
-                var userLongReposnse = await _authService.GenerateJwt(user.Email);
+                var userLongReposnse = await _authenticationService.GenerateJwt(user.Email);
                 return Response.Ok(AuthMessages.User_Login_Success, userLongReposnse);
             }
 
