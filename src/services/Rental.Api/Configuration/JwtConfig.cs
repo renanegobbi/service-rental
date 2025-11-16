@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Rental.Api.Extensions;
+using System.Security.Claims;
 using System.Text;
 
 namespace Rental.Api.Configuration
@@ -33,8 +34,16 @@ namespace Rental.Api.Configuration
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = true,
                     ValidateAudience = false,
-                    ValidIssuer = appSettings.Issuer
+                    ValidIssuer = appSettings.Issuer,
+                    RoleClaimType = ClaimTypes.Role
                 };
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("ManagerOnly", policy => policy.RequireRole("Manager"));
+                options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
             });
         }
 

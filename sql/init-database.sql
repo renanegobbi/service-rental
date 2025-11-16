@@ -230,17 +230,56 @@ CREATE TABLE rental_service."notification" (
 
 
 -- ==========================================================
--- INSERTS
+-- INSERT USERS 
 -- ==========================================================
+INSERT INTO rental_service."users" 
+(id, user_name, normalized_username, email, normalized_email, email_confirmed, password_hash, security_stamp, concurrency_stamp, phone_number_confirmed, two_factor_enabled, lockout_enabled, access_failed_count)
+VALUES
+(gen_random_uuid(), 'admin@rental.com', 'ADMIN@RENTAL.COM', 'admin@rental.com', 'ADMIN@RENTAL.COM', true, 'AQAAAAIAAYagAAAAEHxCbOqEDXrSFqZQSCfynqxY2wtgr1ElLdSyLrGfX9T8RxdGaffs29y6s7ucsX1Q3g==', gen_random_uuid(), gen_random_uuid(), false, false, false, 0),
+(gen_random_uuid(), 'manager@rental.com', 'MANAGER@RENTAL.COM', 'manager@rental.com', 'MANAGER@RENTAL.COM', true, 'AQAAAAIAAYagAAAAEO1UnZOn8v4us/0Mp839/lbVwFwMB3NnKk0mx4bB4ITTEjYmGshkUgCTGqgsgr+TSA==', gen_random_uuid(), gen_random_uuid(), false, false, false, 0),
+(gen_random_uuid(), 'user@rental.com', 'USER@RENTAL.COM', 'user@rental.com', 'USER@RENTAL.COM', true, 'AQAAAAIAAYagAAAAEO0lQEG6wMBE9buJqO0vIQlq6Hkv9rYbhjTGYNaoC0osDAHR2K5dTZB05+H8SluQqA==', gen_random_uuid(), gen_random_uuid(), false, false, false, 0);
 
+
+-- ==========================================================
+-- INSERT ROLES (Admin, Manager, User)
+-- ==========================================================
+INSERT INTO rental_service.roles (id, name, normalized_name, concurrency_stamp)
+VALUES 
+  (gen_random_uuid(), 'Admin', 'ADMIN', gen_random_uuid()),
+  (gen_random_uuid(), 'Manager', 'MANAGER', gen_random_uuid()),
+  (gen_random_uuid(), 'User', 'USER', gen_random_uuid());
+
+
+-- ==========================================================
+-- INSERT USER_ROLES 
+-- ==========================================================
+INSERT INTO rental_service."user_roles" (user_id, role_id)
+VALUES (
+  (SELECT id FROM rental_service.users WHERE email = 'admin@rental.com'),
+  (SELECT id FROM rental_service.roles WHERE name = 'Admin')
+);
+
+INSERT INTO rental_service."user_roles" (user_id, role_id)
+VALUES (
+  (SELECT id FROM rental_service.users WHERE email = 'manager@rental.com'),
+  (SELECT id FROM rental_service.roles WHERE name = 'Manager')
+);
+
+INSERT INTO rental_service."user_roles" (user_id, role_id)
+VALUES (
+  (SELECT id FROM rental_service.users WHERE email = 'user@rental.com'),
+  (SELECT id FROM rental_service.roles WHERE name = 'User')
+);
+
+
+-- ==========================================================
+-- INSERT DRIVER_LICENSE_TYPE
+-- ==========================================================
 INSERT INTO rental_service."driver_license_type" (id, code, description)
 VALUES 
     (gen_random_uuid(), 'A',  'Motorcycle'),
     (gen_random_uuid(), 'B',  'Car'),
     (gen_random_uuid(), 'AB', 'Motorcycle and Car');
-
-
-
 
 
 

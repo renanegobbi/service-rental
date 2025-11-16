@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Rental.Api.Controllers.V1
 {
-    [Authorize]
+    [Authorize(Roles = "Admin, Manager")]
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(InternalServerErrorResponse), (int)HttpStatusCode.InternalServerError)]
@@ -49,7 +49,7 @@ namespace Rental.Api.Controllers.V1
         /// </ul>
         /// </remarks>
         [HttpPost]
-        [ClaimsAuthorize("RentalPlan","Read")]
+        [AllowAnonymous]
         [Route("v{version:apiVersion}/[controller]/search")]
         [SwaggerRequestExample(typeof(GetAllRentalPlanRequest), typeof(GetAllRentalPlanRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(GetAllRentalPlanResponseExample))]
@@ -72,7 +72,6 @@ namespace Rental.Api.Controllers.V1
         /// </ul>
         /// </remarks>
         [HttpPost]
-        [AllowAnonymous]
         [Route("v{version:apiVersion}/[controller]/add")]
         [SwaggerRequestExample(typeof(AddRentalPlanRequest), typeof(AddRentalPlanRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(AddRentalPlanResponseExamplo))]
@@ -89,7 +88,6 @@ namespace Rental.Api.Controllers.V1
         /// </summary>
         /// <returns></returns>
         [HttpPut]
-        [AllowAnonymous]
         [Route("v{version:apiVersion}/[controller]/update")]
         [SwaggerRequestExample(typeof(UpdateRentalPlanRequest), typeof(UpdateRentalPlanRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(UpdateRentalPlanResponseExamplo))]
@@ -106,7 +104,6 @@ namespace Rental.Api.Controllers.V1
         /// </summary>
         /// <returns></returns>
         [HttpDelete]
-        [AllowAnonymous]
         [Route("v{version:apiVersion}/[controller]/delete")]
         [SwaggerRequestExample(typeof(DeleteRentalPlanRequest), typeof(DeleteRentalPlanRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(DeleteRentalPlanResponseExamplo))]
