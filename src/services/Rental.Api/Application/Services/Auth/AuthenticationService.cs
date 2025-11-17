@@ -22,20 +22,20 @@ namespace Rental.Api.Application.Services.Auth
         public readonly SignInManager<ApplicationUser> _signInManager;
         public readonly UserManager<ApplicationUser> _userManager;
         private readonly AppSettings _appSettings;
-        private readonly AppTokenSettings _appTokenSettingsSettings;
+        private readonly AppTokenSettings _appTokenSettings;
         private readonly IdentityContext _context;
 
         public AuthenticationService(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             IOptions<AppSettings> appSettings,
-            IOptions<AppTokenSettings> appTokenSettingsSettings,
+            IOptions<AppTokenSettings> appTokenSettings,
             IdentityContext context)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _appSettings = appSettings.Value;
-            _appTokenSettingsSettings = appTokenSettingsSettings.Value;
+            _appTokenSettings = appTokenSettings.Value;
             _context = context;
         }
 
@@ -82,7 +82,6 @@ namespace Rental.Api.Application.Services.Auth
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = _appSettings.Issuer,
-                //Audience = _appSettings.ValidIn,
                 Subject = identityClaims,
                 Expires = DateTime.UtcNow.AddHours(_appSettings.ExpirationHours),
                 SigningCredentials = new SigningCredentials(
@@ -120,7 +119,7 @@ namespace Rental.Api.Application.Services.Auth
             var refreshToken = new RefreshToken
             {
                 Username = email,
-                ExpirationDate = DateTime.UtcNow.AddHours(_appTokenSettingsSettings.RefreshTokenExpiration)
+                ExpirationDate = DateTime.UtcNow.AddHours(_appTokenSettings.RefreshTokenExpiration)
             };
 
             _context.RefreshTokens.RemoveRange(_context.RefreshTokens.Where(u => u.Username == email));
