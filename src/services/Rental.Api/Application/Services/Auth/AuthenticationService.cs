@@ -13,6 +13,7 @@ using System.Text;
 using System.Linq;
 using Rental.Api.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Rental.Services.Identity;
 
 namespace Rental.Api.Application.Services.Auth
 {

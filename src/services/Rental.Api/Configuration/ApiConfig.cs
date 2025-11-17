@@ -8,6 +8,7 @@ using Rental.Api.Data;
 using Rental.Api.Middlewares;
 using System.Net;
 using System.Text.Json.Serialization;
+using Rental.Services.Identity;
 
 namespace Rental.Api.Configuration
 {

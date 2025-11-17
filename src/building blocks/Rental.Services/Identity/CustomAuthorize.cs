@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using Rental.Core.Responses;
 
-namespace Rental.Api.Extensions
+namespace Rental.Services.Identity
 {
     public class CustomAuthorize
     {

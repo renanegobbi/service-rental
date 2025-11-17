@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Rental.Api.Extensions;
+using Rental.Core.Authorization;
 using System.Security.Claims;
 using System.Text;
 
-namespace Rental.Api.Configuration
+namespace Rental.Services.Identity
 {
     public static class JwtConfig
     {
@@ -41,9 +41,17 @@ namespace Rental.Api.Configuration
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-                options.AddPolicy("ManagerOnly", policy => policy.RequireRole("Manager"));
-                options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
+                options.AddPolicy(AuthorizationPolicies.AdminOnly,
+                    policy => policy.RequireRole(UserRoles.Admin));
+
+                options.AddPolicy(AuthorizationPolicies.ManagerOnly,
+                    policy => policy.RequireRole(UserRoles.Manager));
+
+                options.AddPolicy(AuthorizationPolicies.UserOnly,
+                    policy => policy.RequireRole(UserRoles.User));
+
+                options.AddPolicy(AuthorizationPolicies.AdminOrManager,
+                    policy => policy.RequireRole(UserRoles.Admin, UserRoles.Manager));
             });
         }
 

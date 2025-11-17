@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Rental.Api.Configuration;
+using Rental.Services.Identity;
 using Rental.Services.Storage;
 
 namespace Rental.Api
