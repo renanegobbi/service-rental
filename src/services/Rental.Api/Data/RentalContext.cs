@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Rental.Api.Entities;
+using Rental.Api.Entities.Audit;
 using Rental.Core.Data;
 using Rental.Core.DomainObjects;
 using Rental.Core.Mediator;
@@ -28,6 +29,7 @@ namespace Rental.Api.Data
         public DbSet<RentalPlan> RentalPlans { get; set; }
         public DbSet<Courier> Couriers { get; set; }
         public DbSet<Motorcycle> Motorcycles { get; set; }
+        public DbSet<AuditLog> AuditLogs { get; set; }
        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,21 +46,48 @@ namespace Rental.Api.Data
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(RentalContext).Assembly);
         }
 
+
         public void BeginTransaction()
         {
-            _transaction = base.Database.BeginTransaction();
+            if (_transaction == null)
+                _transaction = Database.BeginTransaction();
         }
 
-        public async Task<bool> CommitTransaction()
+        public async Task<bool> SaveChangesAsync()
         {
             var success = await base.SaveChangesAsync() > 0;
 
             return success;
         }
 
-        public void RollbackTransaction()
+        public async Task<bool> CommitTransaction()
         {
-            _transaction.Rollback();
+            try
+            {
+                if (_transaction != null)
+                {
+                    await _transaction.CommitAsync();
+                    await _transaction.DisposeAsync();
+                    _transaction = null;
+                }
+
+                return true;
+            }
+            catch
+            {
+                await RollbackTransaction();
+                throw;
+            }
+        }
+
+        public async Task RollbackTransaction()
+        {
+            if (_transaction != null)
+            {
+                await _transaction.RollbackAsync();
+                await _transaction.DisposeAsync();
+                _transaction = null;
+            }
         }
 
     }

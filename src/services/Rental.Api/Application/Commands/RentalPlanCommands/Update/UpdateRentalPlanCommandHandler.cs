@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Rental.Api.Application.Extensions;
+using Rental.Api.Application.Services.Audit;
+using Rental.Api.Entities.Audit;
 using Rental.Api.Infrastructure.Repository;
 using Rental.Core.Interfaces;
 using Rental.Core.Messages;
@@ -17,10 +19,12 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Update
         IRequestHandler<UpdateRentalPlanCommand, IResponse>
     {
         private readonly IRentalPlanRepository _rentalPlanRepository;
+        IAuditService _audit;
 
-        public UpdateRentalPlanCommandHandler(IRentalPlanRepository rentalPlanRepository)
+        public UpdateRentalPlanCommandHandler(IRentalPlanRepository rentalPlanRepository, IAuditService audit)
         {
             _rentalPlanRepository = rentalPlanRepository;
+            _audit = audit;
         }
 
         public async Task<IResponse> Handle(UpdateRentalPlanCommand command, CancellationToken cancellationToken)

@@ -1,9 +1,27 @@
 -- ==========================================================
--- SCHEMA RENTAL
+-- RENTAL_SERVICE SCHEMA 
 -- ==========================================================
 
 -- Create schema
 CREATE SCHEMA IF NOT EXISTS rental_service AUTHORIZATION postgres;
+
+
+-- ==========================================================
+-- AUDIT_LOG TABLE
+-- ==========================================================
+
+CREATE TABLE IF NOT EXISTS rental_service."audit_log" (
+    id BIGSERIAL PRIMARY KEY,
+    event_type TEXT,
+    message TEXT,
+    object_before TEXT,
+    object_after TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    username TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_audit_log_created_at ON rental_service."audit_log"(created_at);
+CREATE INDEX IF NOT EXISTS idx_audit_log_username ON rental_service."audit_log"(username);
 
 
 -- ==========================================================
