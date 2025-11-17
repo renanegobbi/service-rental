@@ -5,8 +5,8 @@ using Rental.Api.Application.Commands.RentalPlanCommands.Delete;
 using Rental.Api.Application.Commands.RentalPlanCommands.Update;
 using Rental.Api.Application.DTOs.RentalPlan;
 using Rental.Api.Application.Queries.RentalPlanQueries.GetAll;
-using Rental.Api.Extensions;
 using Rental.Api.Swagger.Examples;
+using Rental.Core.Authorization;
 using Rental.Core.Mediator;
 using Rental.Core.Pagination;
 using Rental.Core.Resources;
@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Rental.Api.Controllers.V1
 {
-    [Authorize(Roles = "Admin, Manager")]
+    [Authorize(Roles = UserRoles.AdminOrManager)]
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(InternalServerErrorResponse), (int)HttpStatusCode.InternalServerError)]
