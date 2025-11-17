@@ -11,5 +11,6 @@ namespace Rental.Api.Entities.Audit
         public string ObjectAfter { get; set; }
         public DateTime CreatedAt { get; set; }
         public string Username { get; set; }
+        public Guid? CorrelationId { get; set; }
     }
 }

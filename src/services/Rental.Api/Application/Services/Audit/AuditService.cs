@@ -33,6 +33,8 @@ namespace Rental.Api.Application.Services.Audit
         {
             try
             {
+                var correlation = _user.GetCorrelationId();
+
                 var audit = new AuditLog
                 {
                     EventType = eventType.ToString(),
@@ -40,7 +42,8 @@ namespace Rental.Api.Application.Services.Audit
                     ObjectBefore = Serialize(beforeState),
                     ObjectAfter = Serialize(afterState),
                     Username = _user.IsAuthenticated() ? _user.GetUserEmail() : null,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.UtcNow,
+                    CorrelationId = string.IsNullOrEmpty(correlation) ? null : Guid.Parse(correlation)
                 };
 
                 _context.AuditLogs.Add(audit);

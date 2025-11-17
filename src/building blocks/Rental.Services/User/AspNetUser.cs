@@ -46,6 +46,14 @@ namespace Rental.Services.User
         {
             return _accessor.HttpContext.User.Claims;
         }
+
+        public string GetCorrelationId()
+        {
+            if (_accessor.HttpContext.Items.ContainsKey("X-Correlation-ID"))
+                return _accessor.HttpContext.Items["X-Correlation-ID"]?.ToString();
+
+            return null;
+        }
     }
 
     public static class ClaimsPrincipalExtensions

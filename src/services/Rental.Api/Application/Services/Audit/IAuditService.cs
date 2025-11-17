@@ -1,4 +1,5 @@
 ﻿using Rental.Api.Entities.Audit;
+using System;
 using System.Threading.Tasks;
 
 namespace Rental.Api.Application.Services.Audit

@@ -12,6 +12,7 @@ CREATE SCHEMA IF NOT EXISTS rental_service AUTHORIZATION postgres;
 
 CREATE TABLE IF NOT EXISTS rental_service."audit_log" (
     id BIGSERIAL PRIMARY KEY,
+	correlation_id UUID NULL,
     event_type TEXT,
     message TEXT,
     object_before TEXT,
@@ -22,6 +23,7 @@ CREATE TABLE IF NOT EXISTS rental_service."audit_log" (
 
 CREATE INDEX IF NOT EXISTS idx_audit_log_created_at ON rental_service."audit_log"(created_at);
 CREATE INDEX IF NOT EXISTS idx_audit_log_username ON rental_service."audit_log"(username);
+CREATE INDEX IF NOT EXISTS idx_audit_log_correlation_id ON rental_service."audit_log"(correlation_id);
 
 
 -- ==========================================================

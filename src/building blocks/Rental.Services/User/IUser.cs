@@ -13,5 +13,6 @@ namespace Rental.Services.User
         bool IsAuthenticated();
         bool IsInRole(string role);
         IEnumerable<Claim> GetClaimsIdentity();
+        string GetCorrelationId();
     }
 }

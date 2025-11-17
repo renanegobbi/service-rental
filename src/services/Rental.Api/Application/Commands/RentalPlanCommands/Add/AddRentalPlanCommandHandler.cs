@@ -8,6 +8,7 @@ using Rental.Core.Interfaces;
 using Rental.Core.Messages;
 using Rental.Core.Resources;
 using Rental.Core.Responses;
+using Rental.Services.User;
 using Serilog;
 using System;
 using System.Linq;
@@ -21,15 +22,19 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Add
     {
         private readonly IRentalPlanRepository _rentalPlanRepository;
         private readonly IAuditService _audit;
+        private readonly IUser _user;
 
-        public AddRentalPlanCommandHandler(IRentalPlanRepository rentalPlanRepository, IAuditService audit)
+        public AddRentalPlanCommandHandler(IRentalPlanRepository rentalPlanRepository, IAuditService audit, IUser user)
         {
             _rentalPlanRepository = rentalPlanRepository;
             _audit = audit;
+            _user = user;
         }
 
         public async Task<IResponse> Handle(AddRentalPlanCommand command, CancellationToken cancellationToken)
         {
+            var correlationId = _user.GetCorrelationId();
+
             Log.Information("Starting AddRentalPlanCommand: DailyRate={DailyRate}, PenaltyPercent={PenaltyPercent}, Description={Description}",
                 command.DailyRate, command.PenaltyPercent, command.Description);
 
@@ -51,8 +56,8 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Add
 
                 await _rentalPlanRepository.UnitOfWork.SaveChangesAsync();
 
-                Log.Information("RentalPlan created: Days={Days}, DailyRate={DailyRate}, PenaltyPercent={PenaltyPercent}, Description={Description}",
-                    rentalPlan.Days, rentalPlan.DailyRate, rentalPlan.PenaltyPercent, rentalPlan.Description);
+                Log.Information("RentalPlan created: Days={Days}, DailyRate={DailyRate}, PenaltyPercent={PenaltyPercent}, Description={Description} for Correlation {CorrelationId}",
+                    rentalPlan.Days, rentalPlan.DailyRate, rentalPlan.PenaltyPercent, rentalPlan.Description, correlationId);
 
                 var rentalPlanResponse = rentalPlan.ToAddRentalPlanResponse();
 

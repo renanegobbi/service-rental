@@ -34,6 +34,11 @@ namespace Rental.Api.Data.Mappings.Audit
 
             builder.Property(x => x.Username)
                    .HasColumnName("username");
+
+            builder.Property(x => x.CorrelationId)
+                   .HasColumnName("correlation_id")
+                   .HasColumnType("uuid")
+                   .IsRequired(false);
         }
     }
 }

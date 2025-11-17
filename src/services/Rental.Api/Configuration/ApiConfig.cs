@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Rental.Api.Data;
+using Rental.Api.Middlewares;
 using System.Net;
 using System.Text.Json.Serialization;
 
@@ -61,6 +62,8 @@ namespace Rental.Api.Configuration
             app.UseResponseCompression();
 
             app.UseRouting();
+
+            app.UseMiddleware<CorrelationIdMiddleware>();
 
             app.UseAuthConfiguration();
 
