@@ -33,8 +33,6 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Add
 
         public async Task<IResponse> Handle(AddRentalPlanCommand command, CancellationToken cancellationToken)
         {
-            var correlationId = _user.GetCorrelationId();
-
             Log.Information("Starting AddRentalPlanCommand: DailyRate={DailyRate}, PenaltyPercent={PenaltyPercent}, Description={Description}",
                 command.DailyRate, command.PenaltyPercent, command.Description);
 
@@ -56,8 +54,8 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Add
 
                 await _rentalPlanRepository.UnitOfWork.SaveChangesAsync();
 
-                Log.Information("RentalPlan created: Days={Days}, DailyRate={DailyRate}, PenaltyPercent={PenaltyPercent}, Description={Description} for Correlation {CorrelationId}",
-                    rentalPlan.Days, rentalPlan.DailyRate, rentalPlan.PenaltyPercent, rentalPlan.Description, correlationId);
+                Log.Information("RentalPlan created: Days={Days}, DailyRate={DailyRate}, PenaltyPercent={PenaltyPercent}, Description={Description}",
+                    rentalPlan.Days, rentalPlan.DailyRate, rentalPlan.PenaltyPercent, rentalPlan.Description);
 
                 var rentalPlanResponse = rentalPlan.ToAddRentalPlanResponse();
 

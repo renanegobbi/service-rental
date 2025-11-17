@@ -24,7 +24,8 @@ namespace Rental.Api.Configuration
             var lokiLabels = new[]
                 {
                     new LokiLabel { Key = "app", Value = "rental-service" },
-                    new LokiLabel { Key = "env", Value = env.EnvironmentName }
+                    new LokiLabel { Key = "env", Value = env.EnvironmentName },
+                    new LokiLabel { Key = "correlationId", Value = "{CorrelationId}" }
                 };
 
             Log.Logger = new LoggerConfiguration()
