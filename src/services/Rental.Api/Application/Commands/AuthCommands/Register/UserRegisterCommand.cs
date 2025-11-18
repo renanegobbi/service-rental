@@ -2,7 +2,7 @@
 using Rental.Api.Application.DTOs.Auth;
 using Rental.Core.Messages;
 
-namespace Rental.Api.Application.Commands.AuthCommands
+namespace Rental.Api.Application.Commands.AuthCommands.Register
 {
     public class UserRegisterCommand : Command
     {

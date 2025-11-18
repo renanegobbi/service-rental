@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rental.Api.Application.Commands.AuthCommands;
 using Rental.Api.Application.Commands.AuthCommands.Login;
+using Rental.Api.Application.Commands.AuthCommands.Register;
 using Rental.Api.Application.Commands.RefreshTokenCommands;
 using Rental.Api.Application.DTOs.Auth;
 using Rental.Api.Swagger.Examples;
@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace Rental.Api.Controllers.V1
 {
+    [Route("v{version:apiVersion}/[controller]")]
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(InternalServerErrorResponse), (int)HttpStatusCode.InternalServerError)]
@@ -43,7 +44,7 @@ namespace Rental.Api.Controllers.V1
         /// </remarks>
         [HttpPost]
         [AllowAnonymous]
-        [Route("v{version:apiVersion}/[controller]/new-account")]
+        [Route("new-account")]
         [SwaggerRequestExample(typeof(UserRegisterRequest), typeof(UserRegisterRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(UserRegisterResponseExamplo))]
         [ProducesResponseType(typeof(UserRegisterResponse), (int)HttpStatusCode.OK)]
@@ -64,7 +65,7 @@ namespace Rental.Api.Controllers.V1
         /// </remarks>
         [HttpPost]
         [AllowAnonymous]
-        [Route("v{version:apiVersion}/[controller]/login")]
+        [Route("login")]
         [SwaggerRequestExample(typeof(UserLoginRequest), typeof(UserLoginRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(UserLoginResponseExamplo))]
         [ProducesResponseType(typeof(UserLoginResponse), (int)HttpStatusCode.OK)]
@@ -80,15 +81,15 @@ namespace Rental.Api.Controllers.V1
         /// </summary>
         /// <remarks>Notes:
         /// <ul>
-        ///     <li>Authentication is not required to access this endpoint.</li>
+        ///     <li>Authentication <b>is required</b> to access this endpoint.</li>
         /// </ul>
         /// </remarks>
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize]
         [SwaggerRequestExample(typeof(RefreshTokenRequest), typeof(RefreshTokenRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(RefreshTokenResponseExamplo))]
         [ProducesResponseType(typeof(RefreshTokenResponse), (int)HttpStatusCode.OK)]
-        [Route("v{version:apiVersion}/[controller]/refresh-token")]
+        [Route("refresh-token")]
         public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {
             var response = await _mediatorHandler.SendCommand(new RefreshTokenCommand(request));

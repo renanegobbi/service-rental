@@ -35,7 +35,7 @@ namespace Rental.Api.Application.Commands.RefreshTokenCommands
                     .Must(BeAValidGuid).WithMessage("Invalid refresh token");
             }
 
-            private bool BeAValidGuid(string refreshToken)
+            private static bool BeAValidGuid(string refreshToken)
             {
                 try
                 {

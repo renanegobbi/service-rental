@@ -37,12 +37,18 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Add
                 command.DailyRate, command.PenaltyPercent, command.Description);
 
             if (!command.IsValid())
+            {
+                Log.Warning("Validation failed for AddRentalPlanCommand: {@Errors}", command.ValidationResult.Errors);
                 return Response.Fail(command.ValidationResult);
+            }
 
             await ValidateBusinessRulesAsync(command);
 
             if (!ValidationResult.IsValid)
+            {
+                Log.Warning("Business rule validation failed for AddRentalPlanCommand: {@Errors}", ValidationResult.Errors);
                 return Response.Fail(ValidationResult);
+            }
 
             var rentalPlan = command.ToRentalPlan();
 
@@ -72,7 +78,7 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Add
             {
                 await _rentalPlanRepository.UnitOfWork.RollbackTransaction();
                 Log.Error(ex, "Error while executing {Command}", nameof(UpdateRentalPlanCommand));
-                throw;
+                return Response.Fail(CommonMessages.Error_Persisting_Data);
             }           
         }
 

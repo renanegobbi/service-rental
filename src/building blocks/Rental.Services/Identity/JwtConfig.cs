@@ -52,6 +52,9 @@ namespace Rental.Services.Identity
 
                 options.AddPolicy(AuthorizationPolicies.AdminOrManager,
                     policy => policy.RequireRole(UserRoles.Admin, UserRoles.Manager));
+
+                options.AddPolicy(AuthorizationPolicies.AllAuthenticatedUsers,
+                    policy => policy.RequireAuthenticatedUser());
             });
         }
 

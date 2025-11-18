@@ -4,6 +4,7 @@ using Rental.Core.Interfaces;
 using Rental.Core.Messages;
 using Rental.Core.Resources;
 using Rental.Core.Responses;
+using Serilog;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace Rental.Api.Application.Commands.RefreshTokenCommands
             if (!command.IsValid())
                 return Response.Fail(command.ValidationResult);
 
-            await ValidateBusinessRulesAsync(command);
+            ValidateBusinessRules(command);
 
             if (!ValidationResult.IsValid)
                 return Response.Fail(ValidationResult);
@@ -34,8 +35,9 @@ namespace Rental.Api.Application.Commands.RefreshTokenCommands
             {
                 guid = Guid.Parse(command.RefreshToken);
             }
-            catch
+            catch (Exception ex)
             {
+                Log.Error(ex, "Error while executing {Command}", nameof(RefreshTokenCommand));
                 return Response.Fail(AuthMessages.Refresh_Token_Invalid);
             }
 
@@ -51,7 +53,7 @@ namespace Rental.Api.Application.Commands.RefreshTokenCommands
                 await _authenticationService.GenerateJwt(refreshToken.Username));
         }
 
-        private async Task ValidateBusinessRulesAsync(RefreshTokenCommand command)
+        private void ValidateBusinessRules(RefreshTokenCommand command)
         {
             if (string.IsNullOrEmpty(command.RefreshToken))
             {
