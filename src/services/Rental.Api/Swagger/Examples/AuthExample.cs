@@ -46,7 +46,7 @@ namespace Rental.Api.Swagger.Examples
             messages: new[] { AuthMessages.User_Created_Successfully },
             data: new UserLoginResponse
             {
-                AccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxZWI3OTNhZS04ZmY3LTRkNDMtODRiYi02ODc4ZjM3Yjg3ZmUiLCJlbWFpbCI6InVzZXJAbWFpbC5jb20iLCJqdGkiOiI4N2JhZjMzOS1jNWVkLTQzNTgtYWZkNC0zZjhjYWFmNWRhZTMiLCJuYmYiOjE3MTE0MjAxMDAsImlhdCI6MTcxMTQyMDEwMCwiZXhwIjoxNzExNDI3MzAwLCJyb2xlIjoiAdmin\"}",
+                AccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxZWI3OTNhZS04ZmY3LTRkNDMtODRiYi02ODc4ZjM3Yjg3ZmUiLCJlbWFpbCI6InVzZXJAbWFpbC5jb20iLCJqdGkiOiI4N2JhZjMzOS1jNWVkLTQzNTgtYWZkNC0zZjhjYWFmNWRhZTMiLCJuYmYiOjE3MTE0MjAxMDAsImlhdCI6MTcxMTQyMDEwMCwiZXhwIjoxNzExNDI3MzAwLCJyb2xlIjoi",
                 RefreshToken = Guid.Parse("3f9d8a23-6a1c-47e8-b872-410f5e5d45d3"),
                 ExpiresIn = 7200,
                 UserToken = new UserToken

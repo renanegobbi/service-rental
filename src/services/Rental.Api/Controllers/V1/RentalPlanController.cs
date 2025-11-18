@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Rental.Api.Controllers.V1
 {
-    [Authorize(Roles = UserRoles.AdminOrManager)]
+    [Route("v{version:apiVersion}/[controller]")]
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(InternalServerErrorResponse), (int)HttpStatusCode.InternalServerError)]
@@ -44,13 +44,12 @@ namespace Rental.Api.Controllers.V1
         /// <remarks>
         /// Notes:
         /// <ul>
-        ///     <li>No authentication is required to access this endpoint.</li>
-        ///     <li>Returns all rental plans.</li>
+        ///     <li>Authentication <b>is required</b> to access this endpoint.</li>
         /// </ul>
         /// </remarks>
         [HttpPost]
-        [AllowAnonymous]
-        [Route("v{version:apiVersion}/[controller]/search")]
+        [Authorize]
+        [Route("search")]
         [SwaggerRequestExample(typeof(GetAllRentalPlanRequest), typeof(GetAllRentalPlanRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(GetAllRentalPlanResponseExample))]
         [ProducesResponseType(typeof(PagedResult<GetAllRentalPlanResponse>), (int)HttpStatusCode.OK)]
@@ -68,11 +67,13 @@ namespace Rental.Api.Controllers.V1
         /// </summary>
         /// <remarks>Notes:
         /// <ul>
-        ///     <li>No authentication is required to access this endpoint.</li>
+        ///     <li>Authentication <b>is required</b> to access this endpoint.</li>
+        ///     <li>Requires appropriate role permissions.</li>
         /// </ul>
         /// </remarks>
         [HttpPost]
-        [Route("v{version:apiVersion}/[controller]/add")]
+        [Authorize(Roles = UserRoles.AdminOrManager)]
+        [Route("add")]
         [SwaggerRequestExample(typeof(AddRentalPlanRequest), typeof(AddRentalPlanRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(AddRentalPlanResponseExamplo))]
         [ProducesResponseType(typeof(AddRentalPlanResponse), (int)HttpStatusCode.OK)]
@@ -86,9 +87,15 @@ namespace Rental.Api.Controllers.V1
         /// <summary>
         /// Updates a rental plan.
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>Notes:
+        /// <ul>
+        ///     <li>Authentication <b>is required</b> to access this endpoint.</li>
+        ///     <li>Requires appropriate role permissions.</li>
+        /// </ul>
+        /// </remarks>
         [HttpPut]
-        [Route("v{version:apiVersion}/[controller]/update")]
+        [Authorize(Roles = UserRoles.AdminOrManager)]
+        [Route("update")]
         [SwaggerRequestExample(typeof(UpdateRentalPlanRequest), typeof(UpdateRentalPlanRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(UpdateRentalPlanResponseExamplo))]
         [ProducesResponseType(typeof(UpdateRentalPlanResponse), (int)HttpStatusCode.OK)]
@@ -102,9 +109,15 @@ namespace Rental.Api.Controllers.V1
         /// <summary>
         /// Deletes a rental plan.
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>Notes:
+        /// <ul>
+        ///     <li>Authentication <b>is required</b> to access this endpoint.</li>
+        ///     <li>Requires appropriate role permissions.</li>
+        /// </ul>
+        /// </remarks>
         [HttpDelete]
-        [Route("v{version:apiVersion}/[controller]/delete")]
+        [Authorize(Roles = UserRoles.AdminOrManager)]
+        [Route("delete")]
         [SwaggerRequestExample(typeof(DeleteRentalPlanRequest), typeof(DeleteRentalPlanRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(DeleteRentalPlanResponseExamplo))]
         [ProducesResponseType(typeof(DeleteRentalPlanResponse), (int)HttpStatusCode.OK)]

@@ -7,5 +7,6 @@
         public const string User = "User";
 
         public const string AdminOrManager = Admin + "," + Manager;
+        public const string AllAuthenticatedUsers = Admin + "," + Manager + "," + User;
     }
 }
