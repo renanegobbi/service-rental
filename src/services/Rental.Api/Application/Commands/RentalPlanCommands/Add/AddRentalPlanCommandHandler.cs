@@ -8,7 +8,6 @@ using Rental.Core.Interfaces;
 using Rental.Core.Messages;
 using Rental.Core.Resources;
 using Rental.Core.Responses;
-using Rental.Services.User;
 using Serilog;
 using System;
 using System.Linq;
@@ -22,13 +21,11 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Add
     {
         private readonly IRentalPlanRepository _rentalPlanRepository;
         private readonly IAuditService _audit;
-        private readonly IUser _user;
 
-        public AddRentalPlanCommandHandler(IRentalPlanRepository rentalPlanRepository, IAuditService audit, IUser user)
+        public AddRentalPlanCommandHandler(IRentalPlanRepository rentalPlanRepository, IAuditService audit)
         {
             _rentalPlanRepository = rentalPlanRepository;
-            _audit = audit;
-            _user = user;
+            _audit = audit;        
         }
 
         public async Task<IResponse> Handle(AddRentalPlanCommand command, CancellationToken cancellationToken)
@@ -38,7 +35,7 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Add
 
             if (!command.IsValid())
             {
-                Log.Warning("Validation failed for AddRentalPlanCommand: {@Errors}", command.ValidationResult.Errors);
+                Log.Information("Validation failed for AddRentalPlanCommand: {@Errors}", command.ValidationResult.Errors);
                 return Response.Fail(command.ValidationResult);
             }
 
@@ -46,7 +43,7 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Add
 
             if (!ValidationResult.IsValid)
             {
-                Log.Warning("Business rule validation failed for AddRentalPlanCommand: {@Errors}", ValidationResult.Errors);
+                Log.Information("Business rule validation failed for AddRentalPlanCommand: {@Errors}", ValidationResult.Errors);
                 return Response.Fail(ValidationResult);
             }
 
