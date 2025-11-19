@@ -26,8 +26,8 @@ namespace Rental.Api.Application.Commands.AuthCommands.Login
             public UserLoginValidation()
             {
                 RuleFor(c => c.Email)
-                    .NotEmpty().WithMessage("Email is required")
-                    .EmailAddress().WithMessage("Invalid email");
+                    .NotEmpty().WithMessage("E-mail is required")
+                    .EmailAddress().WithMessage("Invalid e-mail");
 
                 RuleFor(c => c.Password)
                     .NotEmpty().WithMessage("Password is required");

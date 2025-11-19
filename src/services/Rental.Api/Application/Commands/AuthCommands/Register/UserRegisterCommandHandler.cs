@@ -23,7 +23,7 @@ namespace Rental.Api.Application.Commands.AuthCommands.Register
 
         public async Task<IResponse> Handle(UserRegisterCommand command, CancellationToken cancellationToken)
         {
-            Log.Information("Starting UserRegisterCommand: Email={Email}", command.Email);
+            Log.Information("Starting UserRegisterCommand: E-mail={Email}", command.Email);
 
             if (!command.IsValid())
             {
@@ -63,7 +63,7 @@ namespace Rental.Api.Application.Commands.AuthCommands.Register
             var exists = await _userManager.FindByEmailAsync(command.Email);
             if (exists != null)
             {
-                AddError("A user with this email already exists.");
+                AddError("A user with this e-mail already exists.");
             }
         }
     }
