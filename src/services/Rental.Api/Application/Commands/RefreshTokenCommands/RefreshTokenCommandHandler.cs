@@ -46,7 +46,7 @@ namespace Rental.Api.Application.Commands.RefreshTokenCommands
             if (refreshToken is null)
                 return Response.Fail(AuthMessages.Refresh_Token_Invalid);
 
-            if (refreshToken.ExpirationDate.ToLocalTime() <= DateTime.Now)
+            if (refreshToken.ExpirationDate.ToLocalTime() <= DateTime.UtcNow)
                 return Response.Fail(AuthMessages.Refresh_Token_Expired);
 
             return Response.Ok(AuthMessages.User_Login_Success,

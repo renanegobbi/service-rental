@@ -8,7 +8,7 @@ namespace Rental.Api.Entities
         public int Days { get; private set; }
         public decimal DailyRate { get; private set; }
         public decimal PenaltyPercent { get; private set; }
-        public string? Description { get; private set; }
+        public string Description { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
         protected RentalPlan() { }
@@ -19,7 +19,7 @@ namespace Rental.Api.Entities
             DailyRate = dailyRate;
             PenaltyPercent = penaltyPercent;
             Description = description;
-            CreatedAt = DateTime.Now;
+            CreatedAt = DateTime.UtcNow;
         }
 
         public void Update(decimal dailyRate, decimal penaltyPercent, string? description)

@@ -17,14 +17,14 @@ namespace Rental.Api.Application.Events.MotocycleEvents
 
         public Task Handle(MotorcycleRegisteredEvent notification, CancellationToken cancellationToken)
         {
-            Console.WriteLine($"[Handler] MotorcycleRegisteredEvent received: {notification.Model} ({DateTime.Now:HH:mm:ss.fff})");
+            Console.WriteLine($"[Handler] MotorcycleRegisteredEvent received: {notification.Model} ({DateTime.UtcNow:HH:mm:ss.fff})");
 
             var motorcycleRegistered = new MotorcycleRegisteredIntegrationEvent(
                 notification.Id, notification.Year, notification.Model, notification.Plate);
 
             var success = _bus.PublishAsync(motorcycleRegistered);
 
-            Console.WriteLine($"[Handler] MotorcycleRegisteredEvent received: {notification.Model} ({DateTime.Now:HH:mm:ss.fff})");
+            Console.WriteLine($"[Handler] MotorcycleRegisteredEvent received: {notification.Model} ({DateTime.UtcNow:HH:mm:ss.fff})");
 
             return Task.CompletedTask;
         }

@@ -13,7 +13,7 @@ namespace Rental.Core.Messages
 
         protected Command()
         {
-            Timestamp = DateTime.Now;
+            Timestamp = DateTime.UtcNow;
         }
 
         public virtual bool IsValid()

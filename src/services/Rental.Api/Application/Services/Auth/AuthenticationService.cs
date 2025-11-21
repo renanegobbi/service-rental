@@ -134,7 +134,7 @@ namespace Rental.Api.Application.Services.Auth
             var token = await _context.RefreshTokens.AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Token == refreshToken);
 
-            return token != null && token.ExpirationDate.ToLocalTime() > DateTime.Now
+            return token != null && token.ExpirationDate.ToLocalTime() > DateTime.UtcNow
                 ? token
                 : null;
         }

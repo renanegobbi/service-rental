@@ -13,7 +13,7 @@ namespace Rental.Api.Application.Extensions
         {
             if (command == null) return null;
 
-            return new DriverLicenseType(command.Code.Trim().ToUpper(), command.Description, isActive: true, createdAt: DateTime.Now);
+            return new DriverLicenseType(command.Code.Trim().ToUpper(), command.Description, isActive: true, createdAt: DateTime.UtcNow);
         }
 
         public static AddDriverLicenseTypeResponse ToAddDriverLicenseTypeResponse(this DriverLicenseType driverLicenseType)

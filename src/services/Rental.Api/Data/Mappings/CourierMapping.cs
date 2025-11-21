@@ -45,9 +45,9 @@ namespace Rental.Api.Data.Mappings
 
             builder.Property(c => c.CreatedAt)
                 .IsRequired()
-                .HasColumnType("timestamp")
+                .HasColumnType("timestamptz")
                 .HasColumnName("created_at")
-                .HasDefaultValueSql("NOW()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             builder.HasIndex(c => c.FullName)
                 .HasDatabaseName("idx_courier_name");

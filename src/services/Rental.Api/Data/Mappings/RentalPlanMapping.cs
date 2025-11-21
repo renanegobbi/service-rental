@@ -35,9 +35,9 @@ namespace Rental.Api.Infrastructure.Mappings
                    .HasColumnName("description");
 
             builder.Property(p => p.CreatedAt)
-                   .HasColumnType("timestamp")
+                   .HasColumnType("timestamptz")
                    .HasColumnName("created_at")
-                   .HasDefaultValueSql("NOW()");
+                   .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             builder.HasIndex(p => p.Days).HasDatabaseName("idx_plan_days");
         }
