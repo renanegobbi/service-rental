@@ -57,7 +57,7 @@ namespace Rental.Api.Application.Commands.RentalPlanCommands.Delete
                 var rentalPlanResponse = rentalPlan.ToDeleteRentalPlanResponse();
 
                 await _audit.AddAsync(AuditEventType.Deleted, $"The RentalPlan {rentalPlanBefore.Id} - {rentalPlanBefore.DailyRate} has been deleted.",
-                    rentalPlanBefore, null);
+                    rentalPlanBefore, rentalPlanResponse);
 
                 var success = await _rentalPlanRepository.UnitOfWork.CommitTransaction();
 

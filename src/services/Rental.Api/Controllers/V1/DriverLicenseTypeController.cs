@@ -6,6 +6,7 @@ using Rental.Api.Application.Commands.DriverLicenseTypeCommands.Update;
 using Rental.Api.Application.DTOs.DriverLicenseType;
 using Rental.Api.Application.Queries.DriverLicenseTypeQueries.GetAll;
 using Rental.Api.Swagger.Examples;
+using Rental.Core.Authorization;
 using Rental.Core.Mediator;
 using Rental.Core.Pagination;
 using Rental.Core.Resources;
@@ -18,6 +19,7 @@ using System.Threading.Tasks;
 
 namespace Rental.Api.Controllers.V1
 {
+    [Route("v{version:apiVersion}/[controller]")]
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(InternalServerErrorResponse), (int)HttpStatusCode.InternalServerError)]
@@ -41,13 +43,12 @@ namespace Rental.Api.Controllers.V1
         /// </summary>
         /// <remarks>Notes:
         /// <ul>
-        ///     <li>No authentication is required to access this endpoint.</li>
-        ///     <li>Returns all driver license types.</li>
+        ///     <li>Authentication <b>is required</b> to access this endpoint.</li>
         /// </ul>
         /// </remarks>
         [HttpPost]
-        [AllowAnonymous]
-        [Route("v{version:apiVersion}/[controller]/search")]
+        [Authorize]
+        [Route("search")]
         [SwaggerRequestExample(typeof(GetAllDriverLicenseTypeRequest), typeof(GetAllDriverLicenseTypeRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(GetAllDriverLicenseTypeResponseExample))]
         [ProducesResponseType(typeof(PagedResult<GetAllDriverLicenseTypeResponse>), (int)HttpStatusCode.OK)]
@@ -65,12 +66,13 @@ namespace Rental.Api.Controllers.V1
         /// </summary>
         /// <remarks>Notes:
         /// <ul>
-        ///     <li>No authentication is required to access this endpoint.</li>
+        ///     <li>Authentication <b>is required</b> to access this endpoint.</li>
+        ///     <li>Requires appropriate role permissions.</li>
         /// </ul>
         /// </remarks>
         [HttpPost]
-        [AllowAnonymous]
-        [Route("v{version:apiVersion}/[controller]/add")]
+        [Authorize(Roles = UserRoles.AdminOrManager)]
+        [Route("add")]
         [SwaggerRequestExample(typeof(AddDriverLicenseTypeRequest), typeof(AddDriverLicenseTypeRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(AddDriverLicenseTypeResponseExamplo))]
         [ProducesResponseType(typeof(AddDriverLicenseTypeResponse), (int)HttpStatusCode.OK)]
@@ -84,10 +86,15 @@ namespace Rental.Api.Controllers.V1
         /// <summary>
         /// Updates a driver license type.
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>Notes:
+        /// <ul>
+        ///     <li>Authentication <b>is required</b> to access this endpoint.</li>
+        ///     <li>Requires appropriate role permissions.</li>
+        /// </ul>
+        /// </remarks>
         [HttpPut]
-        [AllowAnonymous]
-        [Route("v{version:apiVersion}/[controller]/update")]
+        [Authorize(Roles = UserRoles.AdminOrManager)]
+        [Route("update")]
         [SwaggerRequestExample(typeof(UpdateDriverLicenseTypeRequest), typeof(UpdateDriverLicenseTypeRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(UpdateDriverLicenseTypeResponseExamplo))]
         [ProducesResponseType(typeof(UpdateDriverLicenseTypeResponse), (int)HttpStatusCode.OK)]
@@ -101,11 +108,16 @@ namespace Rental.Api.Controllers.V1
         /// <summary>
         /// Deletes a driver license type.
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>Notes:
+        /// <ul>
+        ///     <li>Authentication <b>is required</b> to access this endpoint.</li>
+        ///     <li>Requires appropriate role permissions.</li>
+        /// </ul>
+        /// </remarks>
         [HttpDelete]
-        [AllowAnonymous]
-        [Route("v{version:apiVersion}/[controller]/delete")]
-        [SwaggerRequestExample(typeof(DeleteDriverLicenseTypeRequest), typeof(DeleteDriverLicenseTypeResponseExamplo))]
+        [Authorize(Roles = UserRoles.AdminOrManager)]
+        [Route("delete")]
+        [SwaggerRequestExample(typeof(DeleteDriverLicenseTypeRequest), typeof(DeleteDriverLicenseTypeRequestExamplo))]
         [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(DeleteDriverLicenseTypeResponseExamplo))]
         [ProducesResponseType(typeof(DeleteDriverLicenseTypeResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Delete([FromBody] DeleteDriverLicenseTypeRequest request)
