@@ -12,18 +12,19 @@ namespace Rental.Api.Entities
 
         protected Motorcycle() { }
 
-        public Motorcycle(Guid id, int year, string model, string plate)
+        public Motorcycle(int year, string model, string plate)
         {
-            Id = id;
             Year = year;
             Model = model;
             Plate = plate;
+            CreatedAt = DateTime.UtcNow;
         }
 
-        public void UpdateInfo(int year, string model)
+        public void Update(int year, string model, string plate)
         {
             Year = year;
             Model = model;
+            Plate = plate;
         }
     }
 }

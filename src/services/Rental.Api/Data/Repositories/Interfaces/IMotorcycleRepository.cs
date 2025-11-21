@@ -4,18 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Rental.Api.Data.Repositories.Interfaces
+namespace Rental.Api.Infrastructure.Repository
 {
-    public interface IMotorcycleRepository 
+    public interface IMotorcycleRepository : IRepository<Motorcycle>
     {
-        IUnitOfWork UnitOfWork { get; }
-
         Task<IEnumerable<Motorcycle>> GetAllAsync();
         Task<Motorcycle?> GetByIdAsync(Guid id);
         Task<Motorcycle?> GetByPlateAsync(string plate);
-
         void Add(Motorcycle motorcycle);
         void Update(Motorcycle motorcycle);
-        void Remove(Motorcycle motorcycle);
+        void Delete(Motorcycle motorcycle);
     }
 }

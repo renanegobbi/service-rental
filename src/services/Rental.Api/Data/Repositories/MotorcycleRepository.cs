@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rental.Api.Data.Repositories.Interfaces;
+using Rental.Api.Data;
 using Rental.Api.Entities;
 using Rental.Core.Data;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Rental.Api.Data.Repositories
+namespace Rental.Api.Infrastructure.Repository
 {
     public class MotorcycleRepository : IMotorcycleRepository
     {
@@ -26,16 +26,16 @@ namespace Rental.Api.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Motorcycle?> GetByPlateAsync(string plate)
-        {
-            return await _context.Motorcycles
-                .FirstOrDefaultAsync(m => m.Plate == plate);
-        }
-
         public async Task<Motorcycle?> GetByIdAsync(Guid id)
         {
             return await _context.Motorcycles
                 .FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        public async Task<Motorcycle?> GetByPlateAsync(string plate)
+        {
+            return await _context.Motorcycles
+                .FirstOrDefaultAsync(m => m.Plate == plate);
         }
 
         public void Add(Motorcycle motorcycle)
@@ -48,10 +48,9 @@ namespace Rental.Api.Data.Repositories
             _context.Motorcycles.Update(motorcycle);
         }
 
-        public void Remove(Motorcycle motorcycle)
+        public void Delete(Motorcycle motorcycle)
         {
             _context.Motorcycles.Remove(motorcycle);
         }
-
     }
 }
