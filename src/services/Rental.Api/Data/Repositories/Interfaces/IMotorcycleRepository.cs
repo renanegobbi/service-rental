@@ -1,4 +1,5 @@
-﻿using Rental.Api.Entities;
+﻿using Rental.Api.Application.Queries.MotorcycleQueries.GetAll;
+using Rental.Api.Entities;
 using Rental.Core.Data;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ namespace Rental.Api.Infrastructure.Repository
 {
     public interface IMotorcycleRepository : IRepository<Motorcycle>
     {
+        Task<Tuple<Motorcycle[], double>> GetAllAsync(GetAllMotorcycleQuery query);
         Task<IEnumerable<Motorcycle>> GetAllAsync();
         Task<Motorcycle?> GetByIdAsync(Guid id);
         Task<Motorcycle?> GetByPlateAsync(string plate);

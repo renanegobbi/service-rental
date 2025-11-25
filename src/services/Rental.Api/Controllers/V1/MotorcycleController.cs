@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Rental.Api.Application.Commands.MotorcycleCommands.Add;
-using Rental.Api.Application.Commands.RentalPlanCommands.Add;
 using Rental.Api.Application.DTOs.Motorcycle;
-using Rental.Api.Application.DTOs.RentalPlan;
+using Rental.Api.Application.Queries.MotorcycleQueries.GetAll;
 using Rental.Api.Swagger.Examples;
-using Rental.Core.Authorization;
 using Rental.Core.Mediator;
+using Rental.Core.Pagination;
+using Rental.Core.Resources;
 using Rental.Core.Responses;
 using Rental.Services.Controllers;
 using Swashbuckle.AspNetCore.Annotations;
@@ -33,6 +32,30 @@ namespace Rental.Api.Controllers.V1
         public MotorcycleController(IMediatorHandler mediatorHandler)
         {
             _mediatorHandler = mediatorHandler;
+        }
+
+        /// <summary>
+        /// Retrieves motorcycles based on query parameters.
+        /// </summary>
+        /// <remarks>
+        /// Notes:
+        /// <ul>
+        ///     <li>Authentication <b>is required</b> to access this endpoint.</li>
+        /// </ul>
+        /// </remarks>
+        [HttpPost]
+        //[Authorize]
+        [Route("search")]
+        [SwaggerRequestExample(typeof(GetAllMotorcycleRequest), typeof(GetAllMotorcycleRequestExamplo))]
+        [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(GetAllMotorcycleResponseExample))]
+        [ProducesResponseType(typeof(PagedResult<GetAllMotorcycleResponse>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAll([FromBody] GetAllMotorcycleRequest request)
+        {
+            var query = new GetAllMotorcycleQuery(request);
+            if (!query.IsValid()) return ApiResponse(query.ValidationResult);
+            var response = await _mediatorHandler.SendQuery(query);
+
+            return ApiResponse(response, CommonMessages.Query_Successful);
         }
 
         /// <summary>
