@@ -10,8 +10,8 @@ namespace Rental.Api.Application.Queries.MotorcycleQueries.GetAll
         public int? Year { get; set; }
         public string Model { get; set; }
         public string Plate { get; set;  }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTimeOffset? StartDate { get; set; }
+        public DateTimeOffset? EndDate { get; set; }
 
         public GetAllMotorcycleQuery(GetAllMotorcycleRequest request)
             : base(

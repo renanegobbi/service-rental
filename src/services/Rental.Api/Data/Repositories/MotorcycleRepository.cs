@@ -64,10 +64,10 @@ namespace Rental.Api.Infrastructure.Repository
                 var records = _context.Motorcycles.AsNoTracking().AsQueryable();
 
                 if (query.StartDate.HasValue)
-                    records = records.Where(x => x.CreatedAt >= query.StartDate.Value);
+                    records = records.Where(x => x.CreatedAt >= query.StartDate.Value.UtcDateTime);
 
                 if (query.EndDate.HasValue)
-                    records = records.Where(x => x.CreatedAt <= query.EndDate.Value);
+                    records = records.Where(x => x.CreatedAt <= query.EndDate.Value.UtcDateTime);
 
                 if (query.Year.HasValue)
                     records = records.Where(f => f.Year == query.Year.Value);
