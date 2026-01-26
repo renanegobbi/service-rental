@@ -12,7 +12,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rental.Api.Application.Commands.MotorcycleCommands.Add
+namespace Rental.Api.Application.Commands.MotocycleCommands.Add
 {
     public class AddMotorcycleCommandHandler : CommandHandler,
         IRequestHandler<AddMotorcycleCommand, IResponse>

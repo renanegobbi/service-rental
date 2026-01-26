@@ -2,7 +2,7 @@
 using Rental.Api.Application.DTOs.Motorcycle;
 using Rental.Core.Messages;
 
-namespace Rental.Api.Application.Commands.MotorcycleCommands.Add
+namespace Rental.Api.Application.Commands.MotocycleCommands.Add
 {
     public class AddMotorcycleCommand : Command
     {

@@ -34,6 +34,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AuthMessages.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\MotorcycleMessages.Designer.cs">
+      <DependentUpon>MotorcycleMessages.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Resources\RentalPlanMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -60,6 +65,10 @@
     <EmbeddedResource Update="Resources\AuthMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AuthMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\MotorcycleMessages.resx">
+      <LastGenOutput>MotorcycleMessages.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\RentalPlanMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

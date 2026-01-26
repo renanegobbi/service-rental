@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Rental.Api.Application.Commands.MotorcycleCommands.Add;
+using Rental.Api.Application.Commands.MotocycleCommands.Add;
+using Rental.Api.Application.Commands.MotocycleCommands.Update;
 using Rental.Api.Application.DTOs.Motorcycle;
 using Rental.Api.Application.Queries.MotorcycleQueries.GetAll;
 using Rental.Api.Swagger.Examples;
@@ -76,6 +77,28 @@ namespace Rental.Api.Controllers.V1
         public async Task<IActionResult> Add([FromBody] AddMotorcycleRequest request)
         {
             var response = await _mediatorHandler.SendCommand(new AddMotorcycleCommand(request));
+
+            return ApiResponse(response);
+        }
+
+        /// <summary>
+        /// Updates a motorcycle.
+        /// </summary>
+        /// <remarks>Notes:
+        /// <ul>
+        ///     <li>Authentication <b>is required</b> to access this endpoint.</li>
+        ///     <li>Requires appropriate role permissions.</li>
+        /// </ul>
+        /// </remarks>
+        [HttpPut]
+        //[Authorize(Roles = UserRoles.AdminOrManager)]
+        [Route("update")]
+        [SwaggerRequestExample(typeof(UpdateMotorcycleRequest), typeof(UpdateMotorcycleRequestExamplo))]
+        [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(UpdateMotorcycleResponseExamplo))]
+        [ProducesResponseType(typeof(UpdateMotorcycleResponse), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Update([FromBody] UpdateMotorcycleRequest request)
+        {
+            var response = await _mediatorHandler.SendCommand(new UpdateMotorcycleCommand(request));
 
             return ApiResponse(response);
         }

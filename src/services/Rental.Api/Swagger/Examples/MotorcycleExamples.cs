@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 namespace Rental.Api.Swagger.Examples
 {
+    #region GetAll
     public class GetAllMotorcycleRequestExamplo : IExamplesProvider<GetAllMotorcycleRequest>
     {
         public GetAllMotorcycleRequest GetExamples() => new GetAllMotorcycleRequest
@@ -75,7 +76,9 @@ namespace Rental.Api.Swagger.Examples
             );
         }
     }
+    #endregion
 
+    #region Add
     public class AddMotorcycleRequestExample : IExamplesProvider<AddMotorcycleRequest>
     {
         public AddMotorcycleRequest GetExamples() => new AddMotorcycleRequest
@@ -101,4 +104,35 @@ namespace Rental.Api.Swagger.Examples
             }
         );
     }
+    #endregion
+
+    #region Update
+    public class UpdateMotorcycleRequestExamplo : IExamplesProvider<UpdateMotorcycleRequest>
+    {
+        public UpdateMotorcycleRequest GetExamples() => new UpdateMotorcycleRequest
+        {
+            Id = Guid.Parse("a39b592b-2116-4843-8959-d4919c092a9e"),
+            Year = 2023,
+            Model = "Honda CG 160 Fan",
+            Plate = "ABC1D23"
+
+        };
+    }
+
+    
+    public class UpdateMotorcycleResponseExamplo : IExamplesProvider<ApiResponse>
+    {
+        public ApiResponse GetExamples() => new ApiResponse(
+            success: true,
+            messages: new[] { MotorcycleMessages.Motorcycle_Updated_Successfully },
+            data: new UpdateMotorcycleResponse()
+            {
+                Id = Guid.Parse("a39b592b-2116-4843-8959-d4919c092a9e"),
+                Year = 2023,
+                Model = "Honda CG 160 Fan",
+                Plate = "ABC1D23"
+            }
+        );
+    }
+    #endregion
 }

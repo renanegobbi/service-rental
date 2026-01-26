@@ -1,5 +1,6 @@
-﻿using Rental.Api.Application.Commands.MotorcycleCommands.Add;
+﻿using Rental.Api.Application.Commands.MotocycleCommands.Add;
 using Rental.Api.Application.DTOs.Motorcycle;
+using Rental.Api.Application.DTOs.RentalPlan;
 using Rental.Api.Entities;
 
 namespace Rental.Api.Application.Extensions
@@ -24,6 +25,19 @@ namespace Rental.Api.Application.Extensions
                 Model = motorcycle.Model,
                 Plate = motorcycle.Plate,
                 CreatedAt = motorcycle.CreatedAt
+            };
+        }
+
+        public static UpdateMotorcycleResponse ToUpdateMotorcycleResponse(this Motorcycle motorcycle)
+        {
+            if (motorcycle == null) return null;
+
+            return new UpdateMotorcycleResponse
+            {
+                Id = motorcycle.Id,
+                Year = motorcycle.Year,
+                Model = motorcycle.Model,
+                Plate = motorcycle.Plate
             };
         }
     }
