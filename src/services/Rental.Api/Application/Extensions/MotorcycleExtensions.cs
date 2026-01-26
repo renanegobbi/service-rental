@@ -40,5 +40,19 @@ namespace Rental.Api.Application.Extensions
                 Plate = motorcycle.Plate
             };
         }
+
+        public static DeleteMotorcycleResponse ToDeleteMotorcycleResponse(this Motorcycle motorcycle)
+        {
+            if (motorcycle == null) return null;
+
+            return new DeleteMotorcycleResponse
+            {
+                Id = motorcycle.Id,
+                Year = motorcycle.Year,
+                Model = motorcycle.Model,
+                Plate = motorcycle.Plate,
+                CreatedAt = motorcycle.CreatedAt
+            };
+        }
     }
 }

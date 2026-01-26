@@ -1,4 +1,6 @@
-﻿using Rental.Api.Application.DTOs.Motorcycle;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Rental.Api.Application.DTOs.Motorcycle;
+using Rental.Api.Application.DTOs.RentalPlan;
 using Rental.Core.Application.Queries.Enums;
 using Rental.Core.Pagination;
 using Rental.Core.Resources;
@@ -115,7 +117,6 @@ namespace Rental.Api.Swagger.Examples
             Year = 2023,
             Model = "Honda CG 160 Fan",
             Plate = "ABC1D23"
-
         };
     }
 
@@ -131,6 +132,32 @@ namespace Rental.Api.Swagger.Examples
                 Year = 2023,
                 Model = "Honda CG 160 Fan",
                 Plate = "ABC1D23"
+            }
+        );
+    }
+    #endregion
+
+    #region Delete
+    public class DeleteMotorcycleRequestExamplo : IExamplesProvider<DeleteMotorcycleRequest>
+    {
+        public DeleteMotorcycleRequest GetExamples() => new DeleteMotorcycleRequest
+        {
+            Id = Guid.Parse("a39b592b-2116-4843-8959-d4919c092a9e")
+        };
+    }
+
+    public class DeleteMotorcycleResponseExamplo : IExamplesProvider<ApiResponse>
+    {
+        public ApiResponse GetExamples() => new ApiResponse(
+            success: true,
+            messages: new[] { MotorcycleMessages.Motorcycle_Deleted_Successfully },
+            data: new DeleteMotorcycleResponse()
+            {
+                Id = Guid.Parse("a39b592b-2116-4843-8959-d4919c092a9e"),
+                Year = 2023,
+                Model = "Honda CG 160 Fan",
+                Plate = "ABC1D23",
+                CreatedAt = new DateTime(2025, 10, 15, 22, 12, 35)
             }
         );
     }

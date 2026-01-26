@@ -1,9 +1,10 @@
 ﻿using Rental.Api.Swagger;
+using Rental.Core.Interfaces;
 using System;
 
 namespace Rental.Api.Application.DTOs.Motorcycle
 {
-    public class UpdateMotorcycleResponse : IExposeInSwagger
+    public class UpdateMotorcycleResponse : IResponse, IExposeInSwagger
     {
         /// <summary>
         /// Unique identifier of the motorcycle to be updated.
