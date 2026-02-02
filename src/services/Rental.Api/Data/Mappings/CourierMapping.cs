@@ -36,8 +36,8 @@ namespace Rental.Api.Data.Mappings
 
             builder.Property(c => c.DriverLicenseType)
                 .IsRequired()
-                .HasColumnType("varchar(5)")
-                .HasColumnName("driver_license_type");
+                .HasColumnType("uuid")
+                .HasColumnName("driver_license_type_id");
 
             builder.Property(c => c.DriverLicenseImageUrl)
                 .HasColumnType("text")
@@ -47,10 +47,10 @@ namespace Rental.Api.Data.Mappings
                 .IsRequired()
                 .HasColumnType("timestamptz")
                 .HasColumnName("created_at")
-                .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                .HasDefaultValueSql("NOW()");
 
             builder.HasIndex(c => c.FullName)
-                .HasDatabaseName("idx_courier_name");
+                .HasDatabaseName("idx_driver_name");
 
             builder.HasIndex(c => c.Cnpj)
                 .IsUnique()
@@ -59,8 +59,6 @@ namespace Rental.Api.Data.Mappings
             builder.HasIndex(c => c.DriverLicenseNumber)
                 .IsUnique()
                 .HasDatabaseName("idx_courier_license_number");
-
-            builder.HasCheckConstraint("chk_courier_license_type", "driver_license_type IN ('A', 'B', 'AB')");
 
             builder.ToTable(name: "courier", schema: "rental_service");
         }

@@ -1,12 +1,10 @@
 ﻿using MediatR;
 using Rental.Api.Application.DTOs.Motorcycle;
-using Rental.Api.Application.DTOs.RentalPlan;
-using Rental.Api.Application.Queries.RentalPlanQueries.GetAll;
 using Rental.Api.Infrastructure.Repository;
 using Rental.Core.Pagination;
-using System.Threading.Tasks;
-using System.Threading;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Rental.Api.Application.Queries.MotorcycleQueries.GetAll
 {
