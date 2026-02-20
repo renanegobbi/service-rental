@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using RedisDatabase = StackExchange.Redis.IDatabase;
@@ -32,8 +31,17 @@ namespace Rental.Api.Data.Cache
 
             var options = ConfigurationOptions.Parse(connStr, ignoreUnknown: true);
 
-            _connection = ConnectionMultiplexer.Connect(options);
-            _db = _connection.GetDatabase();
+            try
+            {
+                _connection = ConnectionMultiplexer.Connect(options);
+                _db = _connection.GetDatabase();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Redis is unavailable at startup. Cache will be ignored.");
+                _connection = null!;
+                _db = null!;
+            }
 
             _jsonOptions = new JsonSerializerOptions
             {
@@ -52,7 +60,7 @@ namespace Rental.Api.Data.Cache
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Redis GET falhou para key {Key}", key);
+                _logger.LogError(ex, "Redis GET failed for key {Key}", key);
                 return default;
             }
         }
@@ -66,12 +74,24 @@ namespace Rental.Api.Data.Cache
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Redis SET falhou para key {Key}", key);
+                _logger.LogError(ex, "Redis SET failed for key {Key}", key);
                 return false;
             }
         }
 
-        public Task<bool> KeyDeleteAsync(string key) => _db.KeyDeleteAsync(key);
+        public async Task<bool> KeyDeleteAsync(string key)
+        {
+            try
+            {
+                if (_connection == null || !_connection.IsConnected) return false;
+                return await _db.KeyDeleteAsync(key);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Redis DEL failed for key {Key}", key);
+                return false;
+            }
+        }
 
         public async Task<T> GetOrSetAsync<T>(string key, Func<Task<T>> factory, TimeSpan? expiry = null)
         {
@@ -85,11 +105,23 @@ namespace Rental.Api.Data.Cache
 
         public async Task KeyDeleteByPrefixAsync(string prefix)
         {
-            var endpoints = _connection.GetEndPoints();
-            var server = _connection.GetServer(endpoints.First());
-            foreach (var key in server.Keys(pattern: $"{prefix}*"))
+            try
             {
-                await _db.KeyDeleteAsync(key);
+                if (_connection == null || !_connection.IsConnected) return;
+
+                var endpoints = _connection.GetEndPoints();
+                if (endpoints == null || endpoints.Length == 0) return;
+
+                var server = _connection.GetServer(endpoints[0]);
+
+                foreach (var key in server.Keys(pattern: $"{prefix}*"))
+                {
+                    await _db.KeyDeleteAsync(key);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Redis KeyDeleteByPrefix failed for prefix {Prefix}", prefix);
             }
         }
 

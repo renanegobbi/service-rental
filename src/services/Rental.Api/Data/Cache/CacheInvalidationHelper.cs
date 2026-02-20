@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Rental.Api.Data.Cache
 {
@@ -11,22 +12,28 @@ namespace Rental.Api.Data.Cache
         /// <summary>
         /// Invalidates all cache keys related to a specific entity.
         /// </summary>
-        public static async Task InvalidateEntityAsync<T>(
+        public static async Task TryInvalidateEntityAsync<T>(
             ICacheService<T> cache,
             string entityName,
-            Guid id,
+            ILogger logger,
+            Guid? id = null,
             string? code = null)
             where T : class
         {
-            // Clear cache for the record by ID
-            await cache.KeyDeleteAsync($"{entityName}:Id:{id}");
+            try
+            {
+                if (id.HasValue)
+                    await cache.KeyDeleteAsync($"{entityName}:Id:{id.Value}");
 
-            // Clear cache for the record by code (if it exists)
-            if (!string.IsNullOrEmpty(code))
-                await cache.KeyDeleteAsync($"{entityName}:Code:{code}");
+                if (!string.IsNullOrEmpty(code))
+                    await cache.KeyDeleteAsync($"{entityName}:Code:{code}");
 
-            // Clear all list caches (GetAll)
-            await cache.KeyDeleteByPrefixAsync($"{entityName}:GetAll");
+                await cache.KeyDeleteByPrefixAsync($"{entityName}:GetAll");
+            }
+            catch (Exception ex)
+            {
+                logger.LogWarning(ex, "Cache invalidation failed for entity {Entity}", entityName);
+            }
         }
 
 
